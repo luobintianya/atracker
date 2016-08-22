@@ -1,16 +1,17 @@
 package com.atracker.core.impl;
 
 import java.util.concurrent.CountDownLatch;
- 
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
 import com.atracker.data.AtrackerTrackerInfo;
 import com.atracker.queue.WorkerValueQueue;
 import com.atracker.queue.executer.AtrackerWorkerThread;
+import com.atracker.queue.executer.ExecuterPool;
 import com.atracker.queue.executer.PersistenceWorker;
 import com.atracker.queue.executer.impl.DefaultPersistenceWorker;
 import com.atracker.queue.impl.DefaultWorkerValueQueue;
+ 
  
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
@@ -20,6 +21,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
+	private AtrackerContext trackContext=new DefaultAtrackerContext();
+	
 	private boolean ignoreError;
 	private boolean hasErrors;
 	private boolean finished;
@@ -31,20 +34,58 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers); 
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
 	}
-	public void trackerInfo(String title, String info) { 
-		
-		
+	public void trackerInfo(String title, String info) {  
+		trackContext.setMaster(this);
+		trackContext.setCurrentContext(Thread.currentThread().getStackTrace());
+		ensureHasWorkerThread();
+		getQueue().put(createAtrackerTrackerInfo(title,info), this.doWhilePut);
 	}
 
+	
+	
+
+
+	private final WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo>()
+	{ 
+		@Override
+		public boolean execute(final WorkerValueQueue<AtrackerTrackerInfo> paramWorkerValueQueue, final AtrackerTrackerInfo paramE)
+		{
+			return (isAllWorkerDead() == false);// if have one is alive then ture otherwise if false
+		}
+	};
+
+	
+	private final boolean isAllWorkerDead()// all worker is die?
+	{
+		for (int i = 0; i < this.maxWorkers; ++i)
+		{
+			if (this.workerThreads[i].isAlive())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	public void setCurrentAtrackerContext(AtrackerContext context) { 
 		
 	}
 
 	public void equeue(AtrackerTrackerInfo info) {
+		
+		
+	
+		 
+		
+		
+		
  
 			
 	}
 
+	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info){
+		AtrackerTrackerInfo value=new AtrackerTrackerInfo();
+		return value;
+	}
 	
 	protected void ensureHasWorkerThread(){
 		if (this.workerThreads != null)
@@ -61,9 +102,10 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 				for (int i = 0; i < this.maxWorkers; ++i)
 				{
 					threads[i] = new AtrackerWorkerThread(createWorker(i), workersStartSignal, this.workersEndedSignal);
-
-					threads[i].start();
+					ExecuterPool.getExcuteService().submit(threads[i]);
 				}
+				
+			
 				this.workerThreads = threads;
 			}
 		}

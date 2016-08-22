@@ -10,7 +10,8 @@ public abstract class PersistenceWorker implements Runnable{
 	private AtrackerMaster master; 
 	private String name;
 	private int workNumber;
-	private AtrackerTrackerInfo currentItem; 
+	private AtrackerTrackerInfo currentItem;
+	
 	private PersistenceService persistenceService;
 	
 	public PersistenceWorker(AtrackerMaster master, String name,int id){
@@ -36,7 +37,7 @@ public abstract class PersistenceWorker implements Runnable{
 	
 	protected void startRecord() {
 		 
-		getPersistenceService().persistence(getCurrentItem());
+		//getPersistenceService().persistence(getCurrentItem());
 		
 	}
 	

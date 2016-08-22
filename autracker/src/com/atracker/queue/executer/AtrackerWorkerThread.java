@@ -14,5 +14,35 @@ public class AtrackerWorkerThread extends Thread {
 		this.endSignal = end;
 		setPriority(Thread.MIN_PRIORITY);//low level priority
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
+	@Override
+	public void run() {
+		setName(this.worker.getName());
+		try {
+			this.startSignal.await(); 
+			beforeThread();
+			super.run();
+
+		} catch (final InterruptedException localInterruptedException)
+
+		{
+			localInterruptedException.printStackTrace();
+		} finally {
+			this.endSignal.countDown();
+			finishedThread();
+		}
+	}
+	
+	protected void beforeThread() {
+		
+	}
+	
+	protected void finishedThread() {
+		
+	}
+	
 	
 }

@@ -88,7 +88,7 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 
 			E value;
 			try {
-				value = exec.execute(this, this.takenValuesListForExec);// call back function take Element and excute other method
+				value = exec.execute(this, this.takenValuesListForExec);// call back function take Element and execute other method
 
 			} finally {
 				this.valueQueueLock.readLock().unlock();
@@ -106,13 +106,10 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 
 			try {
 				while (!this.stopped && (ret = this.queue.poll()) == null) {
-
 					this.valueQueueEmpty.await();
 				}
 				if (ret != null) {
-
 					this.setValueTakenBy(workerNumber, ret);
-
 				}
 			} catch (InterruptedException arg5) {
 				;
@@ -145,15 +142,13 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 						+ " is already stopped");
 			}
 			while (this.maxQueueSize > 0
-					&& this.queue.size() >= this.maxQueueSize) {
+					&& this.queue.size() >= this.maxQueueSize) {// if queue is full 
 
-				if (!this.execute(exec, value)) {
-
-					return false;
-
+				if (!this.execute(exec, value)) {  //if have die then return false
+					return false; 
 				}
 
-				try {
+				try { //waiting 
 					this.valueQueueFull.await(500L, DEFAULT_PUT_INTERVAL_UNIT);
 
 				} catch (InterruptedException arg5) {

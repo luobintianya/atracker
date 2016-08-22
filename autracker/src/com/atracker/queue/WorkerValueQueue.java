@@ -26,7 +26,7 @@ public abstract interface WorkerValueQueue<E> {
 
 	  public abstract void stop();
 
-	  public static abstract interface ExecuteOnTaken<E>
+	  public static abstract interface ExecuteOnTaken<E> //while  execute queue 
 	  {
 	    public abstract E execute(WorkerValueQueue<E> paramWorkerValueQueue, List<E> paramList);
 	  }

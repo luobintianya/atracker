@@ -40,7 +40,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private volatile int parentId = 0;
 	private volatile int spanId = 0;
 	private volatile boolean isrollback = false;
-	private String currentMethodName;
+	private StackTraceElement currentMethod;
 	private volatile int lastspanId = 0;
 	private volatile int lastparentId = 0;
 	private String trackerId;
@@ -56,9 +56,8 @@ public class DefaultAtrackerContext extends AtrackerContext {
 		String spanStr = validateParentMethod(allMethod);//查看是是否存在于父类中，如果在，查看当前方法时候已经被调用过，调用过返回调用的parentID spanId-1需要自加
 		int spanID=Integer.valueOf(spanStr.split(UNDERLINE)[0]);//span method id
 		int parentID=Integer.valueOf(spanStr.split(UNDERLINE)[METHODLEVEL]);//parent method id
-		StackTraceElement currentMethod=allMethod[METHODLEVEL];//current method
+		currentMethod=allMethod[METHODLEVEL];//current method
 		String method=keyMethodName(currentMethod); 
-		currentMethodName=method;
 		Map<String, String> methodValue=getOrCreate(currentMethod);
 		//System.out.println("spanID" + spanID);
 		if(isrollback){
@@ -105,8 +104,8 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	public String getTrackerID() {
 		return this.trackerId;
 	}
-	public String getCurrentMethod() {
-		return this.currentMethodName;
+	public StackTraceElement getCurrentMethod() {
+		return this.currentMethod;
 	}
 
 	private String keyMethodName(StackTraceElement mthod ){
@@ -182,5 +181,11 @@ public class DefaultAtrackerContext extends AtrackerContext {
 			}else{
 				return value;
 			} 
+	}
+
+	@Override
+	public String getCurrentMethodName() {
+		// TODO Auto-generated method stub
+		return keyMethodName(this.currentMethod);
 	}
 }
