@@ -24,7 +24,7 @@ public abstract class PersistenceWorker implements Runnable{
 	public void run() { 
 		
 		try { 
-			for(setCurrentItem(getMaster().fetchNext(this)); getCurrentItem() != null; setCurrent(getMaster().fetchNext(this))){ //get current item
+			for(setCurrentItem(getMaster().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getMaster().fetchNext(this))){ //get current item
 				startRecord(); //start record.
 			}
 		} catch (InterruptedException e) {
@@ -41,10 +41,7 @@ public abstract class PersistenceWorker implements Runnable{
 		
 	}
 	
-	
-	private void setCurrent(AtrackerTrackerInfo info){
-		this.currentItem=info;
-	}
+	 
 	/**
 	 * @return the master
 	 */

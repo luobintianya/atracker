@@ -98,7 +98,7 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 		}
 	}
 
-	public E take(int workerNumber) {
+	public E take(int workerNumber) {//set a thread number and take
 		E ret = null;
 		if (!this.stopped) {
 
@@ -111,7 +111,7 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 				if (ret != null) {
 					this.setValueTakenBy(workerNumber, ret);
 				}
-			} catch (InterruptedException arg5) {
+			} catch (InterruptedException ex) {
 				;
 			} finally {
 				this.valueQueueFull.signalAll();
@@ -158,7 +158,7 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 
 			this.queue.add(value);
 
-			this.valueQueueEmpty.signalAll();
+			this.valueQueueEmpty.signalAll();//notify not empty now
 
 		} finally {
 			this.valueQueueLock.writeLock().unlock();
@@ -181,8 +181,8 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 		try {
 			keepWaiting = this.isValueTakenOrQueueNotEmptyInternal();
 			if (keepWaiting) { 
-				this.valueQueueFull.await(time, timeUnit);
-				keepWaiting = this.isValueTakenOrQueueNotEmptyInternal();
+				this.valueQueueFull.await(time, timeUnit);//full and waiting 
+				keepWaiting = this.isValueTakenOrQueueNotEmptyInternal();// is empty or have other take value
 
 			}
 		} catch (InterruptedException e) {
@@ -222,15 +222,15 @@ public class DefaultWorkerValueQueue<E> extends AbstractWorkerValueQueue<E> {
 	public boolean isValueTakenOrQueueNotEmpty() {
 		this.valueQueueLock.readLock().lock();
 
-		boolean arg1;
+		boolean isEmpty;
 
 		try {
-			arg1 = this.isValueTakenOrQueueNotEmptyInternal();
+			isEmpty = this.isValueTakenOrQueueNotEmptyInternal();
 
 		} finally {
 			this.valueQueueLock.readLock().unlock();
 		}
-		return arg1;
+		return isEmpty;
 	}
 
 	private boolean isValueTakenOrQueueNotEmptyInternal() {

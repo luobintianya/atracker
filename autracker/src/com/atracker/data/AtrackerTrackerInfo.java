@@ -21,14 +21,14 @@ public class AtrackerTrackerInfo {
 	private String hostIp;
 	private String trackerIp;
 	private int level; 
-	private int trackId;
+	private String trackId;
 	private int spanId;
 	private int parentId;
 	private String methodName;
 	private String methodFullName	; 
 	private long timestamp;
-	private Date starttime;
-	private Date endtime; 
+	private long starttime;
+	private long endtime; 
 	private Object logInfo;
 	
 	/**
@@ -43,18 +43,7 @@ public class AtrackerTrackerInfo {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	/**
-	 * @return the trackId
-	 */
-	public int getTrackId() {
-		return trackId;
-	}
-	/**
-	 * @param trackId the trackId to set
-	 */
-	public void setTrackId(int trackId) {
-		this.trackId = trackId;
-	}
+  
 	/**
 	 * @return the spanId
 	 */
@@ -130,25 +119,25 @@ public class AtrackerTrackerInfo {
 	/**
 	 * @return the starttime
 	 */
-	public Date getStarttime() {
+	public long getStarttime() {
 		return starttime;
 	}
 	/**
 	 * @param starttime the starttime to set
 	 */
-	public void setStarttime(Date starttime) {
+	public void setStarttime(long starttime) {
 		this.starttime = starttime;
 	}
 	/**
 	 * @return the endtime
 	 */
-	public Date getEndtime() {
+	public long getEndtime() {
 		return endtime;
 	}
 	/**
 	 * @param endtime the endtime to set
 	 */
-	public void setEndtime(Date endtime) {
+	public void setEndtime(long endtime) {
 		this.endtime = endtime;
 	}
 	/**
@@ -174,6 +163,18 @@ public class AtrackerTrackerInfo {
 	 */
 	public void setTrackerIp(String trackerIp) {
 		this.trackerIp = trackerIp;
+	}
+	/**
+	 * @return the trackId
+	 */
+	public String getTrackId() {
+		return trackId;
+	}
+	/**
+	 * @param trackId the trackId to set
+	 */
+	public void setTrackId(String trackId) {
+		this.trackId = trackId;
 	}
 	
 	
