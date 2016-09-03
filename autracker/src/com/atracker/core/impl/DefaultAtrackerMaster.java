@@ -16,13 +16,12 @@ import com.atracker.service.BasicIdGeneratorService;
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
 
-	private ThreadLocal<AtrackerTrackerInfo> currentLocal ;
-	private AtrackerContext context;
+	private ThreadLocal<AtrackerTrackerInfo> currentLocal ; 
 	private final int maxWorkers;
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
-	private AtrackerContext trackContext=new DefaultAtrackerContext();
+	private AtrackerContext trackContext;
 	private	AtrackerTrackerInfo value;
 	private BasicIdGeneratorService generator=new BasicIdGeneratorService();
 	private boolean ignoreError;
@@ -36,8 +35,9 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
 		this.currentLocal=new ThreadLocal<AtrackerTrackerInfo>();
-		value=new AtrackerTrackerInfo(); 
-		generator=new BasicIdGeneratorService();
+		this.trackContext=new DefaultAtrackerContext();
+		this.value=new AtrackerTrackerInfo(); 
+		this.generator=new BasicIdGeneratorService();
 		this.currentLocal.set(value); 
 		
 	}
@@ -64,7 +64,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 			}
 		}
 		value.setStarttime(System.currentTimeMillis()); 
-		value.setMethodFullName(getContext().getCurrentMethod().getMethodName());
+		value.setMethodFullName(getTrackContext().getCurrentMethod().getMethodName());
 		value.setLogInfo(info); 
 		return value;
 	}
@@ -189,13 +189,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	 */
 	public void setIgnoreError(boolean ignoreError) {
 		this.ignoreError = ignoreError;
-	}
-	/**
-	 * @return the context
-	 */
-	public AtrackerContext getContext() {
-		return context;
-	}
+	} 
 	@Override
 	public void setCurrentAtrackerContext(AtrackerContext context) {
 		this.trackContext=context;
@@ -223,5 +217,12 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 			return this.level;
 		}
 		
+	}
+
+	/**
+	 * @return the trackContext
+	 */
+	public AtrackerContext getTrackContext() {
+		return trackContext;
 	}
 }

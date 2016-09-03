@@ -1,6 +1,5 @@
 package com.atracker.data;
 
-import java.util.Date;
 
 public class AtrackerTrackerInfo {
 	

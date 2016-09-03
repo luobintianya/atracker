@@ -12,7 +12,7 @@ public class AtrackerWorkerThread extends Thread {
 		this.worker = worker;
 		this.startSignal = start;
 		this.endSignal = end;
-		setPriority(Thread.MIN_PRIORITY);//low level priority
+		//setPriority(Thread.MIN_PRIORITY);//low level priority
 	}
 
 	/* (non-Javadoc)
