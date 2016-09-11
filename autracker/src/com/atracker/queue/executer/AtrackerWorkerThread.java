@@ -9,6 +9,7 @@ public class AtrackerWorkerThread extends Thread {
 
 	public AtrackerWorkerThread(PersistenceWorker worker, CountDownLatch start,
 			CountDownLatch end) {
+		super(worker);
 		this.worker = worker;
 		this.startSignal = start;
 		this.endSignal = end;

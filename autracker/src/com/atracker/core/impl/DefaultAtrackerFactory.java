@@ -5,7 +5,7 @@ import com.atracker.core.AtrackerMaster;
 
 public class DefaultAtrackerFactory implements AtrackerFactory {
 
-	private final static int MAXWORKERS=5;
+	private final static int MAXWORKERS=2;
 	
 	
 	

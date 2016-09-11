@@ -147,9 +147,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 					threads[i] = new AtrackerWorkerThread(createWorker(i), workersStartSignal, this.workersEndedSignal);
 					//ExecuterPool.getExcuteService().submit(threads[i]);
 					threads[i].start();
-				}
-				
-			
+				} 
 				this.workerThreads = threads;
 			}
 		}
