@@ -1,7 +1,7 @@
 package com.atracker.core.impl;
 
 import java.util.concurrent.CountDownLatch;
-
+ 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
 import com.atracker.data.AtrackerTrackerInfo;
@@ -22,8 +22,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
 	private AtrackerContext trackContext;
-	private	AtrackerTrackerInfo value;
-	private BasicIdGeneratorService generator=new BasicIdGeneratorService();
+	private	AtrackerTrackerInfo value; 
 	private boolean ignoreError;
 	private boolean hasErrors;
 	private boolean finished;
@@ -36,8 +35,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
 		this.currentLocal=new ThreadLocal<AtrackerTrackerInfo>();
 		this.trackContext=new DefaultAtrackerContext();
-		this.value=new AtrackerTrackerInfo(); 
-		this.generator=new BasicIdGeneratorService();
+		this.value=new AtrackerTrackerInfo();  
 		this.currentLocal.set(value); 
 		
 	}
@@ -53,11 +51,11 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info,AtrackerContext trackContext,LEVEL level){
 		if(LEVEL.START.equals(level)){
 			value=new AtrackerTrackerInfo();  
-			value.setTrackId(generator.generate());
+			value.setTrackId(this.trackContext.getTrackerID());
 			
 		}else if(LEVEL.END.equals(level)){
 			value.setEndtime(System.currentTimeMillis());
-			value.setTrackId(generator.generate());
+			value.setTrackId(this.trackContext.getTrackerID());
 		}else{
 			if(value==null){
 				value=new AtrackerTrackerInfo();   
@@ -176,6 +174,11 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	public WorkerValueQueue<AtrackerTrackerInfo> getQueue() {
 		return queue;
 	}
+	
+	public void clearWorkerNumber(final PersistenceWorker worker)
+	{
+		getQueue().clearValueTaken(worker.getWorkNumber());
+	}
 	/**
 	 * @return the ignoreError
 	 */
@@ -207,8 +210,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		}
 		
 		@Override
-		public String toString() {
-			// TODO Auto-generated method stub
+		public String toString() { 
 			return String.valueOf(this.level);
 		}
 		public int getLevel(){

@@ -11,6 +11,11 @@ public class TestAtrack {
 	}
 
 	public static void a(){
-	 	Atracker.currentAtrackerMaster().trackerInfo("a", "kkkk", LEVEL.START);; 
+	 	Atracker.currentAtrackerMaster().trackerInfo("a", "kkkk", LEVEL.START);;
+	 	b();
+	}
+	public static void b(){
+	 	Atracker.currentAtrackerMaster().trackerInfo("b", "kkkk", LEVEL.START);;
+	 	
 	}
 }

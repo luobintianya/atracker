@@ -36,7 +36,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private static final ThreadLocal<AtrackerContext> atrackinfo = new ThreadLocal<AtrackerContext>();
 
 	private static final String UNDERLINE = "_";
-	private static final int METHODLEVEL =1;
+	private static final int METHODLEVEL =2;
 	private volatile int parentId = 0;
 	private volatile int spanId = 0;
 	private volatile boolean isrollback = false;
@@ -55,7 +55,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 
 		String spanStr = validateParentMethod(allMethod);//查看是是否存在于父类中，如果在，查看当前方法时候已经被调用过，调用过返回调用的parentID spanId-1需要自加
 		int spanID=Integer.valueOf(spanStr.split(UNDERLINE)[0]);//span method id
-		int parentID=Integer.valueOf(spanStr.split(UNDERLINE)[METHODLEVEL]);//parent method id
+		int parentID=Integer.valueOf(spanStr.split(UNDERLINE)[1]);//parent method id
 		currentMethod=allMethod[METHODLEVEL];//current method
 		String method=keyMethodName(currentMethod); 
 		Map<String, String> methodValue=getOrCreate(currentMethod);

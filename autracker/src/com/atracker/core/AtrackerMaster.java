@@ -15,4 +15,6 @@ public interface AtrackerMaster {
   
  void equeue(AtrackerTrackerInfo info);
  
+ public void clearWorkerNumber(final PersistenceWorker worker);
+ 
 }

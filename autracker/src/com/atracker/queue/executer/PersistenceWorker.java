@@ -23,22 +23,31 @@ public abstract class PersistenceWorker implements Runnable{
 	}
 	public void run() { 
 		
-		System.out.println("xxxxxxxx"+getName());
+		
+		
+		
 		try { 
 			for(setCurrentItem(getMaster().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getMaster().fetchNext(this))){ //get current item
 				startRecord(); //start record.
+
+				System.out.println("xxxxxxxx"+getName());
+				
+				
+				
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace(); 
 		} catch (Exception e) { 
 			e.printStackTrace();
+		} finally {
+			getMaster().clearWorkerNumber(this);
 		}
 
 	}
 	
 	protected void startRecord() {
-		 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		//getPersistenceService().persistence(getCurrentItem());
+		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		getPersistenceService().persistence(getCurrentItem());
 		
 	}
 	
