@@ -1,7 +1,7 @@
 package com.atracker.core.impl;
 
 import java.util.concurrent.CountDownLatch;
- 
+
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
 import com.atracker.data.AtrackerTrackerInfo;
@@ -10,7 +10,6 @@ import com.atracker.queue.executer.AtrackerWorkerThread;
 import com.atracker.queue.executer.PersistenceWorker;
 import com.atracker.queue.executer.impl.DefaultPersistenceWorker;
 import com.atracker.queue.impl.DefaultWorkerValueQueue;
-import com.atracker.service.BasicIdGeneratorService;
  
  
 
