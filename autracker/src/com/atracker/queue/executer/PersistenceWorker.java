@@ -21,18 +21,14 @@ public abstract class PersistenceWorker implements Runnable{
 		this.persistenceService=PersistenceProvider.getPersistenceService();
 		
 	}
-	public void run() { 
-		
-		
+	public void run() {  
 		
 		
 		try { 
 			for(setCurrentItem(getMaster().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getMaster().fetchNext(this))){ //get current item
 				startRecord(); //start record.
 
-				System.out.println("xxxxxxxx"+getName());
-				
-				
+				System.out.println("xxxxxxxx"+getName()); 
 				
 			}
 		} catch (InterruptedException e) {
@@ -46,12 +42,13 @@ public abstract class PersistenceWorker implements Runnable{
 	}
 	
 	protected void startRecord() {
-		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		getPersistenceService().persistence(getCurrentItem());
-		
+		try {
+			getPersistenceService().persistence(getCurrentItem());
+		} finally {
+			getMaster().notifyFinished(this, getCurrentItem().getTrackId());
+		}
 	}
-	
-	 
+
 	/**
 	 * @return the master
 	 */

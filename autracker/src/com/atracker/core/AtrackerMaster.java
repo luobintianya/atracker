@@ -9,7 +9,7 @@ public interface AtrackerMaster {
 
  public void trackerInfo(String title,String info,LEVEL level);
  
- public void setCurrentAtrackerContext(AtrackerContext context);
+ public AtrackerContext getCurrentAtrackerContext();
  
  public AtrackerTrackerInfo fetchNext(PersistenceWorker worker)  throws InterruptedException;
   
@@ -17,4 +17,5 @@ public interface AtrackerMaster {
  
  public void clearWorkerNumber(final PersistenceWorker worker);
  
+ boolean notifyFinished(PersistenceWorker worker,String trackId) ;
 }

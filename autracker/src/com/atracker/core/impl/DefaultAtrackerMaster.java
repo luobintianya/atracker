@@ -15,12 +15,11 @@ import com.atracker.queue.impl.DefaultWorkerValueQueue;
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
 
-	private ThreadLocal<AtrackerTrackerInfo> currentLocal ; 
+	private ThreadLocal<AtrackerContext> currentLocal ; 
 	private final int maxWorkers;
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
-	private AtrackerContext trackContext;
 	private	AtrackerTrackerInfo value; 
 	private boolean ignoreError;
 	private boolean hasErrors;
@@ -32,14 +31,12 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.ignoreError=true;
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
-		this.currentLocal=new ThreadLocal<AtrackerTrackerInfo>();
-		this.trackContext=new DefaultAtrackerContext();
-		this.value=new AtrackerTrackerInfo();  
-		this.currentLocal.set(value); 
+		this.currentLocal=new ThreadLocal<AtrackerContext>(); 
+		this.value=new AtrackerTrackerInfo();   
 		
 	}
 	public void trackerInfo(String title, String info,LEVEL level) {  
-		
+		AtrackerContext	trackContext =getOrCreateAtrackerContextInternal();
 		trackContext.setMaster(this);
 		trackContext.setCurrentContext(Thread.currentThread().getStackTrace());
 		equeue(createAtrackerTrackerInfo(title,info,trackContext,level));
@@ -47,21 +44,37 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 
 	
 
+	private AtrackerContext getOrCreateAtrackerContextInternal(){
+		AtrackerContext trackContext;
+		System.out.println(Thread.currentThread().getName());
+		if(currentLocal.get()==null){ 
+			System.out.println("has not get Context");
+			trackContext=new DefaultAtrackerContext();
+			currentLocal.set(trackContext);
+		}else{
+			System.out.println("has not get Context");
+			trackContext=currentLocal.get();
+		}
+		return trackContext;
+	}
+	
 	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info,AtrackerContext trackContext,LEVEL level){
+		
+ 
 		if(LEVEL.START.equals(level)){
 			value=new AtrackerTrackerInfo();  
-			value.setTrackId(this.trackContext.getTrackerID());
+			value.setTrackId( trackContext.getTrackerID());
 			
 		}else if(LEVEL.END.equals(level)){
 			value.setEndtime(System.currentTimeMillis());
-			value.setTrackId(this.trackContext.getTrackerID());
+			value.setTrackId(trackContext.getTrackerID());
 		}else{
 			if(value==null){
 				value=new AtrackerTrackerInfo();   
 			}
 		}
 		value.setStarttime(System.currentTimeMillis()); 
-		value.setMethodFullName(getTrackContext().getCurrentMethod().getMethodName());
+		value.setMethodFullName(trackContext.getCurrentMethod().getMethodName());
 		value.setLogInfo(info); 
 		return value;
 	}
@@ -178,6 +191,12 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	{
 		getQueue().clearValueTaken(worker.getWorkNumber());
 	}
+	
+	public boolean notifyFinished(PersistenceWorker worker,String trackId) { 
+		System.out.println(trackId);
+		getQueue().clearValueTaken(worker.getWorkNumber()); 
+		return (!(this.finished));
+	}
 	/**
 	 * @return the ignoreError
 	 */
@@ -190,14 +209,11 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	public void setIgnoreError(boolean ignoreError) {
 		this.ignoreError = ignoreError;
 	} 
-	@Override
-	public void setCurrentAtrackerContext(AtrackerContext context) {
-		this.trackContext=context;
-	}
+	  
 	/**
 	 * @return the currentLocal
 	 */
-	public ThreadLocal<AtrackerTrackerInfo> getCurrentLocal() {
+	public ThreadLocal<AtrackerContext> getCurrentLocal() {
 		return currentLocal;
 	}
 	 
@@ -218,10 +234,11 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 
-	/**
-	 * @return the trackContext
-	 */
-	public AtrackerContext getTrackContext() {
-		return trackContext;
+	@Override
+	public AtrackerContext getCurrentAtrackerContext() {
+		return getOrCreateAtrackerContextInternal();
+		
 	}
+
+	 
 }
