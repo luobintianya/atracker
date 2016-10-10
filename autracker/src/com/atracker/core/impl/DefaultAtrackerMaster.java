@@ -20,7 +20,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
-	private	AtrackerTrackerInfo value; 
+	 
 	private boolean ignoreError;
 	private boolean hasErrors;
 	private boolean finished;
@@ -31,8 +31,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.ignoreError=true;
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
-		this.currentLocal=new ThreadLocal<AtrackerContext>(); 
-		this.value=new AtrackerTrackerInfo();   
+		this.currentLocal=new ThreadLocal<AtrackerContext>();  
 		
 	}
 	public void trackerInfo(String title, String info,LEVEL level) {  
@@ -59,22 +58,21 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 	
 	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info,AtrackerContext trackContext,LEVEL level){
-		
+		AtrackerTrackerInfo value=new AtrackerTrackerInfo();  
  
 		if(LEVEL.START.equals(level)){
-			value=new AtrackerTrackerInfo();  
+			
 			value.setTrackId( trackContext.getTrackerID());
 			
 		}else if(LEVEL.END.equals(level)){
 			value.setEndtime(System.currentTimeMillis());
 			value.setTrackId(trackContext.getTrackerID());
-		}else{
-			if(value==null){
-				value=new AtrackerTrackerInfo();   
-			}
 		}
 		value.setStarttime(System.currentTimeMillis()); 
-		value.setMethodFullName(trackContext.getCurrentMethod().getMethodName());
+		value.setSpanId(trackContext.getSpanID());
+		value.setParentId(trackContext.getParentId());
+		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
+		value.setMethodFullName(trackContext.getCurrentMethod().getClassName()+"."+trackContext.getCurrentMethod().getMethodName());
 		value.setLogInfo(info); 
 		return value;
 	}
@@ -192,8 +190,9 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		getQueue().clearValueTaken(worker.getWorkNumber());
 	}
 	
-	public boolean notifyFinished(PersistenceWorker worker,String trackId) { 
-		System.out.println(trackId);
+	public boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) { 
+		System.out.println(trackInfo.getTrackId()); 
+		System.out.println(trackInfo.getMethodFullName());
 		getQueue().clearValueTaken(worker.getWorkNumber()); 
 		return (!(this.finished));
 	}

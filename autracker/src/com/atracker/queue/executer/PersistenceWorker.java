@@ -45,7 +45,7 @@ public abstract class PersistenceWorker implements Runnable{
 		try {
 			getPersistenceService().persistence(getCurrentItem());
 		} finally {
-			getMaster().notifyFinished(this, getCurrentItem().getTrackId());
+			getMaster().notifyFinished(this, getCurrentItem());
 		}
 	}
 

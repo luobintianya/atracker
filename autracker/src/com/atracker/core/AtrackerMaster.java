@@ -17,5 +17,5 @@ public interface AtrackerMaster {
  
  public void clearWorkerNumber(final PersistenceWorker worker);
  
- boolean notifyFinished(PersistenceWorker worker,String trackId) ;
+ boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) ;
 }
