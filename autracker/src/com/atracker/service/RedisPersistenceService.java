@@ -21,7 +21,7 @@ public class RedisPersistenceService implements PersistenceService {
 		map.put(info.HOSTIP, info.getHostIp());
 		map.put("age", "22");
 		map.put("qq", "123456");
-		System.out.println(map);
+		//System.out.println(map);
 		//jedis.hmset("user", map);
 		
 	 

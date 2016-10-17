@@ -29,6 +29,7 @@ public class AtrackerTrackerInfo {
 	private long starttime;
 	private long endtime; 
 	private Object logInfo;
+	private int lineNumber;
 	
 	/**
 	 * @return the level
@@ -174,6 +175,18 @@ public class AtrackerTrackerInfo {
 	 */
 	public void setTrackId(String trackId) {
 		this.trackId = trackId;
+	}
+	/**
+	 * @return the lineNumber
+	 */
+	public int getLineNumber() {
+		return lineNumber;
+	}
+	/**
+	 * @param lineNumber the lineNumber to set
+	 */
+	public void setLineNumber(int lineNumber) {
+		this.lineNumber = lineNumber;
 	}
 	
 	

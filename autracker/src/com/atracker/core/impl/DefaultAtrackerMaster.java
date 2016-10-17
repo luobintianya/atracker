@@ -15,12 +15,12 @@ import com.atracker.queue.impl.DefaultWorkerValueQueue;
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
 
-	private ThreadLocal<AtrackerContext> currentLocal ; 
+	private ThreadLocal<AtrackerContext> currentLocal=new ThreadLocal<AtrackerContext>(); ; 
 	private final int maxWorkers;
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
-	 
+	private AtrackerMaster preAtrackerMaster;
 	private boolean ignoreError;
 	private boolean hasErrors;
 	private boolean finished;
@@ -31,7 +31,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		this.ignoreError=true;
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
-		this.currentLocal=new ThreadLocal<AtrackerContext>();  
+ 
 		
 	}
 	public void trackerInfo(String title, String info,LEVEL level) {  
@@ -44,14 +44,15 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	
 
 	private AtrackerContext getOrCreateAtrackerContextInternal(){
+	
 		AtrackerContext trackContext;
-		System.out.println(Thread.currentThread().getName());
 		if(currentLocal.get()==null){ 
 			System.out.println("has not get Context");
+			System.out.println("----------"+currentLocal+"-------------"); 
 			trackContext=new DefaultAtrackerContext();
 			currentLocal.set(trackContext);
 		}else{
-			System.out.println("has not get Context");
+			System.out.println("has get Context");
 			trackContext=currentLocal.get();
 		}
 		return trackContext;
@@ -61,17 +62,18 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		AtrackerTrackerInfo value=new AtrackerTrackerInfo();  
  
 		if(LEVEL.START.equals(level)){
-			
-			value.setTrackId( trackContext.getTrackerID());
+
+			value.setStarttime(System.currentTimeMillis()); 
 			
 		}else if(LEVEL.END.equals(level)){
 			value.setEndtime(System.currentTimeMillis());
-			value.setTrackId(trackContext.getTrackerID());
+			
 		}
-		value.setStarttime(System.currentTimeMillis()); 
+		value.setTrackId(Thread.currentThread().getName()+trackContext.getTrackerID());
 		value.setSpanId(trackContext.getSpanID());
 		value.setParentId(trackContext.getParentId());
 		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
+		value.setLineNumber(trackContext.getCurrentMethod().getLineNumber());
 		value.setMethodFullName(trackContext.getCurrentMethod().getClassName()+"."+trackContext.getCurrentMethod().getMethodName());
 		value.setLogInfo(info); 
 		return value;
@@ -193,6 +195,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	public boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) { 
 		System.out.println(trackInfo.getTrackId()); 
 		System.out.println(trackInfo.getMethodFullName());
+		System.out.println(trackInfo.getLogInfo());
 		getQueue().clearValueTaken(worker.getWorkNumber()); 
 		return (!(this.finished));
 	}
@@ -237,6 +240,16 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	public AtrackerContext getCurrentAtrackerContext() {
 		return getOrCreateAtrackerContextInternal();
 		
+	}
+	@Override
+	public void setPreAtrackerMaster(AtrackerMaster pre) {
+		this.preAtrackerMaster=pre;
+	}
+	/**
+	 * @return the preAtrackerMaster
+	 */
+	public AtrackerMaster getPreAtrackerMaster() {
+		return preAtrackerMaster;
 	}
 
 	 

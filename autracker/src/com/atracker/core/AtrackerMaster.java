@@ -15,6 +15,10 @@ public interface AtrackerMaster {
   
  void equeue(AtrackerTrackerInfo info);
  
+ void setPreAtrackerMaster(AtrackerMaster pre);
+ 
+ AtrackerMaster getPreAtrackerMaster();
+ 
  public void clearWorkerNumber(final PersistenceWorker worker);
  
  boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) ;
