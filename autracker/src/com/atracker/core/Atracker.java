@@ -23,12 +23,13 @@ public class Atracker {
 		AtrackerMaster temp = localMaster.get();
 		if (currentMaster == null) {
 			if (temp == null) {
-				System.out.println("************new Master**************");
+				System.out.println("************frist**************");
 				temp = factory.getInstance();
 				localMaster.set(temp);
 			}
 			currentMaster = localMaster.get();
 		} else if (currentMaster != null && temp == null) { 
+			System.out.println("************new master**************");
 			temp = factory.getInstance();
 			temp.setPreAtrackerMaster(currentMaster);
 			currentMaster = temp;

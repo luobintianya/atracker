@@ -47,9 +47,14 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	
 		AtrackerContext trackContext;
 		if(currentLocal.get()==null){ 
-			System.out.println("has not get Context");
-			System.out.println("----------"+currentLocal+"-------------"); 
+			if(getPreAtrackerMaster()!=null && getPreAtrackerMaster().getCurrentAtrackerContext()!=null){
+				trackContext=getPreAtrackerMaster().getCurrentAtrackerContext();
+				System.out.println(trackContext.getTrackerID());
+			}else{
+				System.out.println("has not get Context");
+				System.out.println("----------"+currentLocal+"-------------");  
 			trackContext=new DefaultAtrackerContext();
+			}
 			currentLocal.set(trackContext);
 		}else{
 			System.out.println("has get Context");
