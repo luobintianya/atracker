@@ -34,7 +34,7 @@ import com.atracker.service.BasicIdGeneratorService;
 public class DefaultAtrackerContext extends AtrackerContext {
 
 	private static final ThreadLocal<AtrackerContext> atrackinfo = new ThreadLocal<AtrackerContext>();
-
+	private static volatile BasicIdGeneratorService generate= new BasicIdGeneratorService();
 	private static final String UNDERLINE = "_";
 	private static final int METHODLEVEL =2;
 	private volatile int parentId = 0;
@@ -43,14 +43,20 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private StackTraceElement currentMethod;
 	private volatile int lastspanId = 0;
 	private volatile int lastparentId = 0;
-	private String trackerId;
+	private volatile int startPoint=0;
+	private volatile String trackerId;
 	private Map<String, Map<String,String>> parentsMethod = new HashMap<String, Map<String,String>>();//method-<fulmethod,spanId_parentId>;
 
 	public DefaultAtrackerContext() {
-		this.trackerId = new BasicIdGeneratorService().generate();
-		atrackinfo.set(this);
+		this(0);
 	}
-
+	public DefaultAtrackerContext(int start) {
+		
+		this.startPoint=start;
+		this.trackerId = generate.generate(); 
+		DefaultAtrackerContext.atrackinfo.set(this);
+	}
+	
 	public void setCurrentContext(StackTraceElement[] allMethod) {
 
 		String spanStr = validateParentMethod(allMethod);//查看是是否存在于父类中，如果在，查看当前方法时候已经被调用过，调用过返回调用的parentID spanId-1需要自加
@@ -66,7 +72,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 			 isrollback=false;
 		}
 		if (spanID == -1 && parentID==0) {
-			parentId = 0; // is root
+			parentId = startPoint; // is root
 			this.spanId = spanId + 1;
 			methodValue.put(currentMethod.toString(), spanId+UNDERLINE+parentId);
 			parentsMethod.put(method, methodValue); 
@@ -77,7 +83,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 		}
 		else{// is sub method
 			if (spanID <= this.spanId && !isCurrentMethodExits(allMethod)) { // not same method
-				parentId = spanID;
+				parentId = spanID+startPoint;
 		 	    this.spanId = spanId + 1;
 		 		methodValue.put(currentMethod.toString(), spanId+UNDERLINE+parentId);
 				parentsMethod.put(method, methodValue); 
@@ -119,7 +125,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	 * @return
 	 */
 	private String validateParentMethod(StackTraceElement[] allMethods) {
-		String ret = "-1_0";
+		String ret = "-1_"+startPoint+"";
 		if (allMethods.length > 2) {
 			for (int i = 2; i < allMethods.length; i++) {
 				String valueRet= getSpanIdParentId(allMethods[i]);//if not eq -1_0 then parent exit
@@ -140,7 +146,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	}
 	
 	private String getSpanIdParentId(StackTraceElement methodName){
-		String ret = "-1_0";
+		String ret = "-1_"+startPoint+"";
 		String keyMethodName=keyMethodName(methodName);
 		Map<String,String> methodValue= parentsMethod.get(keyMethodName); 
 		if (methodValue!=null) { 

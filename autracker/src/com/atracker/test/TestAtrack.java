@@ -18,16 +18,10 @@ public class TestAtrack {
 	 	Thread t1=new Thread(new Runnable() { //for test thread situation
 			@Override
 			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				 
 				e();
 
-				System.out.println("**********t1******************\n");
-			 
+			
 			}
 		});
 	 	Thread t2=new Thread(new Runnable() { //for test thread situation
@@ -38,7 +32,16 @@ public class TestAtrack {
 			}
 		});
 	 	t1.start(); 
+	 	
+		System.out.println("--------------------------------------------------");
+		 
 	 	t2.start(); 
+	 	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	 	g();
 	 	
 	}
@@ -55,6 +58,7 @@ public class TestAtrack {
 	}
 	
 	public static void g(){
+		System.out.println("***********g*****************\n"); 
 		Atracker.currentAtrackerMaster().trackerInfo("g", Thread.currentThread().getName()+"-------"+"ggggggg", LEVEL.TRACK);;
 		
 	}

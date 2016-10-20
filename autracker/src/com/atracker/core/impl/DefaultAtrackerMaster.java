@@ -15,51 +15,57 @@ import com.atracker.queue.impl.DefaultWorkerValueQueue;
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
 
-	private ThreadLocal<AtrackerContext> currentLocal=new ThreadLocal<AtrackerContext>(); ; 
+	private ThreadLocal<AtrackerContext> currentLocal=new ThreadLocal<AtrackerContext>(); 
+	private final String ATRACKENABLE="atrack.enable";
 	private final int maxWorkers;
 	private final CountDownLatch workersEndedSignal;
 	private volatile AtrackerWorkerThread[] workerThreads;
 	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
-	private AtrackerMaster preAtrackerMaster;
+	private volatile AtrackerMaster preAtrackerMaster=null; 
+	private	volatile AtrackerContext trackContext ;
 	private boolean ignoreError;
 	private boolean hasErrors;
 	private boolean finished;
-	
+	private boolean isEnable=true;
 	
 	public DefaultAtrackerMaster(int maxWorkers){
+		this.isEnable=true;
 		this.maxWorkers=maxWorkers;
 		this.ignoreError=true;
 		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
 		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
- 
+		this.trackContext=new DefaultAtrackerContext();
+	
 		
 	}
-	public void trackerInfo(String title, String info,LEVEL level) {  
-		AtrackerContext	trackContext =getOrCreateAtrackerContextInternal();
-		trackContext.setMaster(this);
-		trackContext.setCurrentContext(Thread.currentThread().getStackTrace());
-		equeue(createAtrackerTrackerInfo(title,info,trackContext,level));
+	public void trackerInfo(String title, String info,LEVEL level) {   
+		isEnable=System.getProperty(ATRACKENABLE)==null?true:Boolean.valueOf(System.getProperty(ATRACKENABLE));
+		
+	
+		if(isEnable){
+			AtrackerContext trackContext = getOrCreateAtrackerContextInternal();
+			trackContext.setMaster(this);
+			trackContext.setCurrentContext(Thread.currentThread().getStackTrace());
+			equeue(createAtrackerTrackerInfo(title, info, trackContext, level));
+		}
 	}
 
 	
 
 	private AtrackerContext getOrCreateAtrackerContextInternal(){
-	
-		AtrackerContext trackContext;
-		if(currentLocal.get()==null){ 
-			if(getPreAtrackerMaster()!=null && getPreAtrackerMaster().getCurrentAtrackerContext()!=null){
-				trackContext=getPreAtrackerMaster().getCurrentAtrackerContext();
-				System.out.println(trackContext.getTrackerID());
-			}else{
-				System.out.println("has not get Context");
-				System.out.println("----------"+currentLocal+"-------------");  
-			trackContext=new DefaultAtrackerContext();
-			}
-			currentLocal.set(trackContext);
-		}else{
-			System.out.println("has get Context");
-			trackContext=currentLocal.get();
-		}
+//		AtrackerContext	trackContext = null;
+//		AtrackerContext temp =currentLocal.get();
+//		if(trackContext==null){ // if null create an set local 
+//			if(temp==null){
+//			trackContext=new DefaultAtrackerContext(); 
+//			currentLocal.set(trackContext); 
+//			}
+//		}else if(temp==null && getPreAtrackerMaster()!=null && getPreAtrackerMaster().getCurrentAtrackerContext()!=null){ 
+//			System.out.println("---新开线程 trackContext");
+//			trackContext=getPreAtrackerMaster().getCurrentAtrackerContext();  
+//		}else if(temp!=null){ 
+//			trackContext=currentLocal.get();
+//		} 
 		return trackContext;
 	}
 	
@@ -74,7 +80,12 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 			value.setEndtime(System.currentTimeMillis());
 			
 		}
-		value.setTrackId(Thread.currentThread().getName()+trackContext.getTrackerID());
+		
+		System.out.println(this+" preAtrackerMaster============================"+preAtrackerMaster);
+		if(this.preAtrackerMaster!=null && preAtrackerMaster.getCurrentAtrackerContext()!=null){
+			value.setParentTrackId(preAtrackerMaster.getCurrentAtrackerContext().getTrackerID());
+		}
+		value.setTrackId(trackContext.getTrackerID());
 		value.setSpanId(trackContext.getSpanID());
 		value.setParentId(trackContext.getParentId());
 		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
@@ -198,10 +209,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 	
 	public boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) { 
-		System.out.println(trackInfo.getTrackId()); 
-		System.out.println(trackInfo.getMethodFullName());
-		System.out.println(trackInfo.getLogInfo());
-		getQueue().clearValueTaken(worker.getWorkNumber()); 
+		System.out.println(trackInfo.toString());  
+		 getQueue().clearValueTaken(worker.getWorkNumber());
 		return (!(this.finished));
 	}
 	/**

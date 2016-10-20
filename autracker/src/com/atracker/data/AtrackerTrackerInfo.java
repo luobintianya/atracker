@@ -21,6 +21,7 @@ public class AtrackerTrackerInfo {
 	private String trackerIp;
 	private int level; 
 	private String trackId;
+	private String parentTrackId;
 	private int spanId;
 	private int parentId;
 	private String methodName;
@@ -187,6 +188,31 @@ public class AtrackerTrackerInfo {
 	 */
 	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", logInfo=" + logInfo+", trackerIp=" + trackerIp
+				+ ", level=" + level + ", trackId=" + trackId + ", spanId="
+				+ spanId + ", parentId=" + parentId + ", methodName="
+				+ methodName + ", methodFullName=" + methodFullName
+				+ ", timestamp=" + timestamp + ", starttime=" + starttime
+				+ ", endtime=" + endtime 
+				+ ", lineNumber=" + lineNumber + "]";
+	}
+	/**
+	 * @return the parentTrackId
+	 */
+	public String getParentTrackId() {
+		return parentTrackId;
+	}
+	/**
+	 * @param parentTrackId the parentTrackId to set
+	 */
+	public void setParentTrackId(String parentTrackId) {
+		this.parentTrackId = parentTrackId;
 	}
 	
 	
