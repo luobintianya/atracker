@@ -50,8 +50,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	public DefaultAtrackerContext() {
 		this(0);
 	}
-	public DefaultAtrackerContext(int start) {
-		
+	public DefaultAtrackerContext(int start) { 
 		this.startPoint=start;
 		this.trackerId = generate.generate(); 
 		DefaultAtrackerContext.atrackinfo.set(this);

@@ -28,7 +28,16 @@ public class TestAtrack {
 			@Override
 			public void run() {
 				e();
-				 
+				 Thread t3=new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						e();
+						f();
+					}
+				});
+				 t3.start();
 			}
 		});
 	 	t1.start(); 
@@ -36,12 +45,7 @@ public class TestAtrack {
 		System.out.println("--------------------------------------------------");
 		 
 	 	t2.start(); 
-	 	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	  
 	 	g();
 	 	
 	}

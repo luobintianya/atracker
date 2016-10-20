@@ -14,33 +14,31 @@ public class Atracker {
 	private static final AtrackerFactory factory = new DefaultAtrackerFactory();
 
 	private static final ThreadLocal<AtrackerMaster> localMaster = new ThreadLocal<AtrackerMaster>();
-	private static AtrackerMaster currentMaster =null; 
+	private static AtrackerMaster currentMaster ; 
 
 	private Atracker() {
 	};
 
-	public static AtrackerMaster currentAtrackerMaster() {
-
-		AtrackerMaster temp = localMaster.get();   
-		synchronized (localMaster) { 
+	public static AtrackerMaster currentAtrackerMaster() { 
+		AtrackerMaster temp = localMaster.get();    
 		if (currentMaster == null) { 
 			if (temp == null) { 
 				temp = factory.getInstance();
 				localMaster.set(temp);
 			}
 			currentMaster = localMaster.get();
+			return currentMaster;
 		} else if (currentMaster != null && temp == null) {  
 			AtrackerMaster	newMaster = factory.getInstance();
-			newMaster.setPreAtrackerMaster(currentMaster); 
-			System.out.println(currentMaster.getCurrentAtrackerContext().getTrackerID()+" "+Thread.currentThread()+"老线程" +currentMaster);
+			newMaster.setPreAtrackerMaster(currentMaster);  
 			currentMaster = newMaster;
-			localMaster.set(newMaster); 
-			System.out.println(currentMaster.getCurrentAtrackerContext().getTrackerID()+" "+Thread.currentThread()+"新开线程 temp" +newMaster);  
+			localMaster.set(newMaster);  
+			return newMaster;
 		} else{
 			currentMaster=temp;
+			return temp;
 		}
-		}
-		return currentMaster;
+		  
 	}
 
 }
