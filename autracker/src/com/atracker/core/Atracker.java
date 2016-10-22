@@ -20,7 +20,10 @@ public class Atracker {
 	};
 
 	public static AtrackerMaster currentAtrackerMaster() { 
-		AtrackerMaster temp = localMaster.get();    
+		AtrackerMaster temp = localMaster.get();   
+		//synchronized (localMaster) {
+			
+	
 		if (currentMaster == null) { 
 			if (temp == null) { 
 				temp = factory.getInstance();
@@ -38,6 +41,7 @@ public class Atracker {
 			currentMaster=temp;
 			return temp;
 		}
+		//}
 		  
 	}
 
