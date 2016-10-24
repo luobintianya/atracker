@@ -1,5 +1,9 @@
 package com.atracker.data;
 
+import com.atracker.core.status.ACTION;
+import com.atracker.core.status.LEVEL;
+import com.atracker.core.status.MODEL;
+
 
 public class AtrackerTrackerInfo {
 	
@@ -15,12 +19,14 @@ public class AtrackerTrackerInfo {
 	public  final String STARTTIME="starttime";
 	public  final String ENDTIME="endtime";
 	public  final String LOGINFO="logInfo";
-	public final String MODEL="model";
-	private String model;
+	public final String MODEL="model"; 
 	private String hostIp;
 	private String trackerIp; 
 	private String trackId;
 	private String parentTrackId;
+	private LEVEL level;
+	private  MODEL model;
+	private ACTION action;
 	private int spanId;
 	private int parentId;
 	private String methodName;
@@ -204,14 +210,38 @@ public class AtrackerTrackerInfo {
 	/**
 	 * @return the model
 	 */
-	public String getModel() {
+	public MODEL getModel() {
 		return model;
 	}
 	/**
 	 * @param model the model to set
 	 */
-	public void setModel(String model) {
+	public void setModel(MODEL model) {
 		this.model = model;
+	}
+	/**
+	 * @return the level
+	 */
+	public LEVEL getLevel() {
+		return level;
+	}
+	/**
+	 * @param level the level to set
+	 */
+	public void setLevel(LEVEL level) {
+		this.level = level;
+	}
+	/**
+	 * @return the action
+	 */
+	public ACTION getAction() {
+		return action;
+	}
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(ACTION action) {
+		this.action = action;
 	}
 	
 	
