@@ -37,7 +37,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 						level));
 			}
 		} catch (Exception e) {
-			System.out.println("ignore");
+			e.printStackTrace();
+			System.out.println("ignore DefaultAtrackerMaster exception");
 		}
 	}
 	
