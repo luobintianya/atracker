@@ -6,7 +6,6 @@ public class AtrackerTrackerInfo {
 	
 	public final String HOSTIP="hostIp";
 	public  final String TRACKERIP="trackerIp";
-	public  final String LEVEL="level";
 	public  final String TRACKID="trackId";
 	public  final String SPANID="spanId";
 	public  final String PARENTID="parentId";
@@ -16,10 +15,10 @@ public class AtrackerTrackerInfo {
 	public  final String STARTTIME="starttime";
 	public  final String ENDTIME="endtime";
 	public  final String LOGINFO="logInfo";
-	
+	public final String MODEL="model";
+	private String model;
 	private String hostIp;
-	private String trackerIp;
-	private int level; 
+	private String trackerIp; 
 	private String trackId;
 	private String parentTrackId;
 	private int spanId;
@@ -31,19 +30,7 @@ public class AtrackerTrackerInfo {
 	private long endtime; 
 	private Object logInfo;
 	private int lineNumber;
-	
-	/**
-	 * @return the level
-	 */
-	public int getLevel() {
-		return level;
-	}
-	/**
-	 * @param level the level to set
-	 */
-	public void setLevel(int level) {
-		this.level = level;
-	}
+ 
   
 	/**
 	 * @return the spanId
@@ -195,7 +182,7 @@ public class AtrackerTrackerInfo {
 	@Override
 	public String toString() {
 		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", logInfo=" + logInfo+", trackerIp=" + trackerIp
-				+ ", level=" + level + ", trackId=" + trackId + ", spanId="
+				+ ", model=" + model + ", trackId=" + trackId + ", spanId="
 				+ spanId + ", parentId=" + parentId + ", methodName="
 				+ methodName + ", methodFullName=" + methodFullName
 				+ ", timestamp=" + timestamp + ", starttime=" + starttime
@@ -213,6 +200,18 @@ public class AtrackerTrackerInfo {
 	 */
 	public void setParentTrackId(String parentTrackId) {
 		this.parentTrackId = parentTrackId;
+	}
+	/**
+	 * @return the model
+	 */
+	public String getModel() {
+		return model;
+	}
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(String model) {
+		this.model = model;
 	}
 	
 	

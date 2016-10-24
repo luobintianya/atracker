@@ -1,7 +1,7 @@
 package com.atracker.test;
 
-import com.atracker.core.Atracker; 
-import com.atracker.core.impl.DefaultAtrackerMaster.LEVEL;
+import com.atracker.core.Atracker;
+import com.atracker.core.status.LEVEL;
 
 public class TestAtrack {
 
@@ -52,18 +52,18 @@ public class TestAtrack {
 	public static void e(){
 		System.out.println("**********e******************\n");
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo("e", Thread.currentThread().getName()+"-------"+"eeee", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("e","-------"+"eeee", LEVEL.TRACK);;
 		f();
 	}
 	public static void f(){
 		System.out.println("***********f*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("f", Thread.currentThread().getName()+"-------"+"ffffff", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("f","-------"+"ffffff", LEVEL.TRACK);;
 		
 	}
 	
 	public static void g(){
 		System.out.println("***********g*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("g", Thread.currentThread().getName()+"-------"+"ggggggg", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("g","-------"+"ggggggg", LEVEL.TRACK);;
 		
 	}
 }

@@ -1,40 +1,38 @@
 package com.atracker.queue.executer;
 
-import com.atracker.core.AtrackerMaster;
 import com.atracker.data.AtrackerTrackerInfo;
 import com.atracker.persistence.PersistenceProvider;
 import com.atracker.service.PersistenceService;
+import com.atracker.threads.AtrackerThreadPool;
 
 public abstract class PersistenceWorker implements Runnable{
 
-	private AtrackerMaster master; 
+	private AtrackerThreadPool poolService; 
 	private String name;
 	private int workNumber;
 	private AtrackerTrackerInfo currentItem;
 	
 	private PersistenceService persistenceService;
 	
-	public PersistenceWorker(AtrackerMaster master, String name,int id){
-		this.master=master;
+	public PersistenceWorker(AtrackerThreadPool poolService, String name,int id){
+		this.poolService=poolService;
 		this.name=name;
 		this.workNumber=id; 
-		this.persistenceService=PersistenceProvider.getPersistenceService();
-		
+		this.persistenceService=PersistenceProvider.getPersistenceService(); 
 	}
 	public void run() {  
 		
 		
 		try { 
-			for(setCurrentItem(getMaster().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getMaster().fetchNext(this))){ //get current item
-				startRecord(); //start record. 
-				
+			for(setCurrentItem(getPoolService().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getPoolService().fetchNext(this))){ //get current item
+				startRecord(); //start record.  
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace(); 
 		} catch (Exception e) { 
 			e.printStackTrace();
 		} finally {
-			getMaster().clearWorkerNumber(this);
+			getPoolService().clearWorkerNumber(this);
 		}
 
 	}
@@ -43,22 +41,11 @@ public abstract class PersistenceWorker implements Runnable{
 		try {
 			getPersistenceService().persistence(getCurrentItem());
 		} finally {
-			getMaster().notifyFinished(this, getCurrentItem());
+			getPoolService().notifyFinished(this, getCurrentItem());
 		}
 	}
 
-	/**
-	 * @return the master
-	 */
-	public AtrackerMaster getMaster() {
-		return master;
-	}
-	/**
-	 * @param master the master to set
-	 */
-	public void setMaster(AtrackerMaster master) {
-		this.master = master;
-	}
+ 
 	/**
 	 * @return the name
 	 */
@@ -106,6 +93,18 @@ public abstract class PersistenceWorker implements Runnable{
 	 */
 	public void setPersistenceService(PersistenceService persistenceService) {
 		this.persistenceService = persistenceService;
+	}
+	/**
+	 * @return the poolService
+	 */
+	public AtrackerThreadPool getPoolService() {
+		return poolService;
+	}
+	/**
+	 * @param poolService the poolService to set
+	 */
+	public void setPoolService(AtrackerThreadPool poolService) {
+		this.poolService = poolService;
 	}
 
 }

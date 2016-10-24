@@ -4,38 +4,31 @@ import java.util.concurrent.CountDownLatch;
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
+import com.atracker.core.status.LEVEL;
 import com.atracker.data.AtrackerTrackerInfo;
 import com.atracker.queue.WorkerValueQueue;
 import com.atracker.queue.executer.AtrackerWorkerThread;
+import com.atracker.queue.executer.ExecuterPool;
 import com.atracker.queue.executer.PersistenceWorker;
 import com.atracker.queue.executer.impl.DefaultPersistenceWorker;
 import com.atracker.queue.impl.DefaultWorkerValueQueue;
+import com.atracker.service.AtrackerThreadPoolService;
  
  
 
 public class DefaultAtrackerMaster implements AtrackerMaster {
 
 	private ThreadLocal<AtrackerContext> currentLocal=new ThreadLocal<AtrackerContext>(); 
-	private final String ATRACKENABLE="atrack.enable";
-	private final int maxWorkers;
-	private final CountDownLatch workersEndedSignal;
-	private volatile AtrackerWorkerThread[] workerThreads;
-	private  final WorkerValueQueue<AtrackerTrackerInfo> queue ;
+	private final String ATRACKENABLE="atrack.enable"; 
 	private volatile AtrackerMaster preAtrackerMaster=null; 
 	private	volatile AtrackerContext trackContext ;
-	private boolean ignoreError;
-	private boolean hasErrors;
-	private boolean finished;
+	
 	private boolean isEnable=true;
 	
-	public DefaultAtrackerMaster(int maxWorkers){
-		this.isEnable=true;
-		this.maxWorkers=maxWorkers;
-		this.ignoreError=true;
-		this.queue=new DefaultWorkerValueQueue<AtrackerTrackerInfo>(maxWorkers);  
-		this.workersEndedSignal=new CountDownLatch(maxWorkers); 
+	public DefaultAtrackerMaster(){
+		this.isEnable=true; 
 		this.trackContext=new DefaultAtrackerContext();
-	
+		
 		
 	}
 	public void trackerInfo(String title, String info,LEVEL level) {   
@@ -53,35 +46,16 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	
 
 	private AtrackerContext getOrCreateAtrackerContextInternal(){
-//		AtrackerContext	trackContext = null;
-//		AtrackerContext temp =currentLocal.get();
-//		if(trackContext==null){ // if null create an set local 
-//			if(temp==null){
-//			trackContext=new DefaultAtrackerContext(); 
-//			currentLocal.set(trackContext); 
-//			}
-//		}else if(temp==null && getPreAtrackerMaster()!=null && getPreAtrackerMaster().getCurrentAtrackerContext()!=null){ 
-//			System.out.println("---新开线程 trackContext");
-//			trackContext=getPreAtrackerMaster().getCurrentAtrackerContext();  
-//		}else if(temp!=null){ 
-//			trackContext=currentLocal.get();
-//		} 
 		return trackContext;
 	}
 	
 	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info,AtrackerContext trackContext,LEVEL level){
-		AtrackerTrackerInfo value=new AtrackerTrackerInfo();  
- 
-		if(LEVEL.START.equals(level)){
-
-			value.setStarttime(System.currentTimeMillis()); 
-			
+		AtrackerTrackerInfo value=new AtrackerTrackerInfo(); 
+		if(LEVEL.START.equals(level)){ 
+			value.setStarttime(System.currentTimeMillis());  
 		}else if(LEVEL.END.equals(level)){
-			value.setEndtime(System.currentTimeMillis());
-			
-		}
-		
-		System.out.println(this+" preAtrackerMaster============================"+preAtrackerMaster);
+			value.setEndtime(System.currentTimeMillis()); 
+		} 
 		if(this.preAtrackerMaster!=null && preAtrackerMaster.getCurrentAtrackerContext()!=null){
 			value.setParentTrackId(preAtrackerMaster.getCurrentAtrackerContext().getTrackerID());
 		}
@@ -94,138 +68,16 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		value.setLogInfo(info); 
 		return value;
 	}
-
-
-	private final WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo>()
-	{ 
-		@Override
-		public boolean execute(final WorkerValueQueue<AtrackerTrackerInfo> paramWorkerValueQueue, final AtrackerTrackerInfo paramE)
-		{
-			return (isAllWorkerDead() == false);// if have one is alive then true otherwise if false
-		}
-	};
-
- 
-
-	private final WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo> doWhileWait = new WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo>()
-	{
-		@Override
-		public boolean execute(final WorkerValueQueue<AtrackerTrackerInfo> paramWorkerValueQueue, final AtrackerTrackerInfo info)
-		{ 
-			if (isAllWorkerDead() != false)
-			{
-				hasErrors = true; 
-				return false;
-			} 
-			return true;
-		}
-	};
-
 	
 	 
-	protected void waitForEmptyQueue()
-	{
-		getQueue().waitUntilEmpty(this.doWhileWait);
-	}
-
-	
-	
-	private final boolean isAllWorkerDead()// all worker is die?
-	{
-		for (int i = 0; i < this.maxWorkers; ++i)
-		{
-			if (this.workerThreads[i].isAlive())
-			{
-				return false;
-			}
-		}
-		return true;
-	}
 	 
-	public void equeue(AtrackerTrackerInfo info) {
-		
-		if (this.finished)
-		{
-			throw new IllegalStateException("master is already finished - cannot enqueue " + info);
-		}
-
-		ensureHasWorkerThread();
-		getQueue().put(info, this.doWhilePut); 
- 
-			
-	}
-
-	
-	protected void ensureHasWorkerThread(){
-		if (this.workerThreads != null)
-		{
-			return;
-		}
-		CountDownLatch workersStartSignal = null;
-		synchronized (this)
-		{
-			if (this.workerThreads == null)
-			{
-				workersStartSignal = new CountDownLatch(1);
-				final AtrackerWorkerThread[] threads = new AtrackerWorkerThread[this.maxWorkers];
-				for (int i = 0; i < this.maxWorkers; ++i)
-				{
-					threads[i] = new AtrackerWorkerThread(createWorker(i), workersStartSignal, this.workersEndedSignal);
-					//ExecuterPool.getExcuteService().submit(threads[i]);
-					threads[i].start();
-				} 
-				this.workerThreads = threads;
-			}
-		}
-		if (workersStartSignal == null)
-		{
-			return;
-		}
-		workersStartSignal.countDown();
-	}
-	
-	
-	public final AtrackerTrackerInfo fetchNext(PersistenceWorker worker) throws InterruptedException {
-		if ((this.finished) || ((!(this.hasErrors)) && (this.finished))) {
-			return null;
-		}
-
-		return ((AtrackerTrackerInfo) getQueue().take(worker.getWorkNumber()));
-	}
-
-	protected PersistenceWorker createWorker(int threadID) {
-		return new DefaultPersistenceWorker(this, "DefaultPersistenceWorker Worker <" + " " + (threadID + 1) + " of " + this.maxWorkers + ">", threadID);
-	}
-	/**
-	 * @return the queue
-	 */
-	public WorkerValueQueue<AtrackerTrackerInfo> getQueue() {
-		return queue;
-	}
-	
-	public void clearWorkerNumber(final PersistenceWorker worker)
-	{
-		getQueue().clearValueTaken(worker.getWorkNumber());
-	}
-	
-	public boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) { 
-		System.out.println(trackInfo.toString());  
-		 getQueue().clearValueTaken(worker.getWorkNumber());
-		return (!(this.finished));
-	}
-	/**
-	 * @return the ignoreError
-	 */
-	public boolean isIgnoreError() {
-		return ignoreError;
-	}
-	/**
-	 * @param ignoreError the ignoreError to set
-	 */
-	public void setIgnoreError(boolean ignoreError) {
-		this.ignoreError = ignoreError;
+	public void equeue(AtrackerTrackerInfo info) { 
+		AtrackerThreadPoolService.equeue(info);
 	} 
-	  
+	
+
+	
+	
 	/**
 	 * @return the currentLocal
 	 */
@@ -233,22 +85,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return currentLocal;
 	}
 	 
-	public enum LEVEL{
-		START(1),TRACK(2),END(3);
-		private int level;
-		LEVEL(int i){
-			this.level=i;
-		}
-		
-		@Override
-		public String toString() { 
-			return String.valueOf(this.level);
-		}
-		public int getLevel(){
-			return this.level;
-		}
-		
-	}
+
 
 	@Override
 	public AtrackerContext getCurrentAtrackerContext() {
