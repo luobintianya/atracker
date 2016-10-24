@@ -25,7 +25,7 @@ public abstract class PersistenceWorker implements Runnable{
 		
 		try { 
 			for(setCurrentItem(getPoolService().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getPoolService().fetchNext(this))){ //get current item
-				startRecord(); //start record.  
+				record(); //start record.  
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace(); 
@@ -37,7 +37,7 @@ public abstract class PersistenceWorker implements Runnable{
 
 	}
 	
-	protected void startRecord() {
+	protected void record() {
 		try {
 			getPersistenceService().persistence(getCurrentItem());
 		} finally {
