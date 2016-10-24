@@ -31,16 +31,23 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 		
 	}
-	public void trackerInfo(String title, String info,LEVEL level) {   
-		isEnable=System.getProperty(ATRACKENABLE)==null?true:Boolean.valueOf(System.getProperty(ATRACKENABLE));  
-		if(isEnable){
-			AtrackerContext trackContext = getOrCreateAtrackerContextInternal();
-			trackContext.setMaster(this);
-			trackContext.setCurrentContext(Thread.currentThread().getStackTrace());
-			equeue(createAtrackerTrackerInfo(title, info, trackContext, level));
+
+	public void trackerInfo(String title, String info, LEVEL level) {
+		try {
+			isEnable = System.getProperty(ATRACKENABLE) == null ? true
+					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
+			if (isEnable) {
+				AtrackerContext trackContext = getOrCreateAtrackerContextInternal();
+				trackContext.setMaster(this);
+				trackContext.setCurrentContext(Thread.currentThread()
+						.getStackTrace());
+				equeue(createAtrackerTrackerInfo(title, info, trackContext,
+						level));
+			}
+		} catch (Exception e) {
+			System.out.println("ignore");
 		}
 	}
-
 	
 
 	private AtrackerContext getOrCreateAtrackerContextInternal(){
