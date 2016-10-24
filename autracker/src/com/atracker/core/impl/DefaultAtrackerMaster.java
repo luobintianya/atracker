@@ -32,9 +32,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 	public void trackerInfo(String title, String info,LEVEL level) {   
-		isEnable=System.getProperty(ATRACKENABLE)==null?true:Boolean.valueOf(System.getProperty(ATRACKENABLE));
-		
-	
+		isEnable=System.getProperty(ATRACKENABLE)==null?true:Boolean.valueOf(System.getProperty(ATRACKENABLE));  
 		if(isEnable){
 			AtrackerContext trackContext = getOrCreateAtrackerContextInternal();
 			trackContext.setMaster(this);
