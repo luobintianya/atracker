@@ -9,6 +9,14 @@ import com.atracker.queue.executer.PersistenceWorker;
 import com.atracker.queue.executer.impl.DefaultPersistenceWorker;
 import com.atracker.service.AtrackerQueueService;
 
+/**
+ * this a thread group , we use  threads get data from queue and
+ *  save data to persistence service.
+ * 
+ * 
+ * @author Robin
+ *
+ */
 public abstract class AtrackerThreadPool {
 
 	private volatile AtrackerWorkerThread[] workerThreads;
