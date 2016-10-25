@@ -1,4 +1,4 @@
-package com.atracker.core.status;
+package com.atracker.core.enums;
 
 public enum MODEL{
 	CART("cart"),ACCOUNT("account"),ORDER("order"),BANNER("banner"),PRODUCT("product"),SEARCH("search"),WISH("wish"),DEFAULT("default");

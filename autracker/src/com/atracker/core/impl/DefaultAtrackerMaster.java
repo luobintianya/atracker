@@ -2,10 +2,11 @@ package com.atracker.core.impl;
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
-import com.atracker.core.status.ACTION;
-import com.atracker.core.status.LEVEL;
-import com.atracker.core.status.MODEL;
+import com.atracker.core.enums.ACTION;
+import com.atracker.core.enums.LEVEL;
+import com.atracker.core.enums.MODEL;
 import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerDataBag;
 import com.atracker.service.AtrackerThreadPoolService;
  
  
@@ -26,7 +27,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 
-	public void trackerInfo(MODEL model,ACTION action,LEVEL level, String info) {
+	public void trackerInfo(MODEL model,ACTION action,LEVEL level, TrackerDataBag info) {
 		try {
 			isEnable = System.getProperty(ATRACKENABLE) == null ? true
 					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
@@ -48,7 +49,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private AtrackerTrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,Object info,AtrackerContext trackContext){
+	private AtrackerTrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,TrackerDataBag bag,AtrackerContext trackContext){
 		AtrackerTrackerInfo value=new AtrackerTrackerInfo(); 
 		if(LEVEL.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
@@ -67,7 +68,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
 		value.setLineNumber(trackContext.getCurrentMethod().getLineNumber());
 		value.setMethodFullName(trackContext.getCurrentMethod().getClassName()+"."+trackContext.getCurrentMethod().getMethodName());
-		value.setLogInfo(info); 
+		value.setDateBag(bag); 
 		return value;
 	}
 	
@@ -106,18 +107,18 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, ACTION action, String info) {
+	public void trackerInfo(MODEL model, ACTION action, TrackerDataBag info) {
 	 trackerInfo(model, action,LEVEL.TRACK,info); 
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, String info) {
+	public void trackerInfo(MODEL model, TrackerDataBag info) {
 		trackerInfo(model, ACTION.UNKNOWE, info);
 		
 	}
 
 	@Override
-	public void trackerInfo(String info) {
+	public void trackerInfo(TrackerDataBag info) {
 	 trackerInfo(MODEL.DEFAULT, info);
 		
 	}

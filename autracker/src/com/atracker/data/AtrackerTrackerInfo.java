@@ -1,12 +1,11 @@
 package com.atracker.data;
 
-import com.atracker.core.status.ACTION;
-import com.atracker.core.status.LEVEL;
-import com.atracker.core.status.MODEL;
+import com.atracker.core.enums.ACTION;
+import com.atracker.core.enums.LEVEL;
+import com.atracker.core.enums.MODEL;
 
 
-public class AtrackerTrackerInfo {
-	
+public class AtrackerTrackerInfo { 
 	
 	public final String HOSTIP="hostIp";
 	public  final String TRACKERIP="trackerIp";
@@ -19,7 +18,7 @@ public class AtrackerTrackerInfo {
 	public  final String STARTTIME="starttime";
 	public  final String ENDTIME="endtime";
 	public  final String LOGINFO="logInfo";
-	public final String MODEL="model"; 
+	public  final String MODEL="model"; 
 	private String hostIp;
 	private String trackerIp; 
 	private String trackId;
@@ -34,7 +33,7 @@ public class AtrackerTrackerInfo {
 	private long timestamp;
 	private long starttime;
 	private long endtime; 
-	private Object logInfo;
+	private TrackerDataBag dataBag;
 	private int lineNumber;
  
   
@@ -86,18 +85,7 @@ public class AtrackerTrackerInfo {
 	public void setMethodFullName(String methodFullName) {
 		this.methodFullName = methodFullName;
 	}
-	/**
-	 * @return the logInfo
-	 */
-	public Object getLogInfo() {
-		return logInfo;
-	}
-	/**
-	 * @param logInfo the logInfo to set
-	 */
-	public void setLogInfo(Object logInfo) {
-		this.logInfo = logInfo;
-	}
+	 
 	/**
 	 * @return the timestamp
 	 */
@@ -187,7 +175,7 @@ public class AtrackerTrackerInfo {
 	 */
 	@Override
 	public String toString() {
-		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", logInfo=" + logInfo+", trackerIp=" + trackerIp
+		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", dateBag=" + dataBag+", trackerIp=" + trackerIp
 				+ ", model=" + model + ", Action=" + action + ", level=" + level+", trackId=" + trackId + ", spanId="
 				+ spanId + ", parentId=" + parentId + ", methodName="
 				+ methodName + ", methodFullName=" + methodFullName
@@ -242,6 +230,18 @@ public class AtrackerTrackerInfo {
 	 */
 	public void setAction(ACTION action) {
 		this.action = action;
+	}
+	/**
+	 * @return the dateBag
+	 */
+	public TrackerDataBag getDateBag() {
+		return dataBag;
+	}
+	/**
+	 * @param dateBag the dateBag to set
+	 */
+	public void setDateBag(TrackerDataBag dataBag) {
+		this.dataBag = dataBag;
 	}
 	
 	
