@@ -10,11 +10,11 @@ public class TestAtrack {
 	}
 
 	public static void a(){ 
-	 	Atracker.currentAtrackerMaster().trackerInfo("a", "aaaaa", LEVEL.START);;
+	 	Atracker.currentAtrackerMaster().trackerInfo( "aaaaa" );;
 	 	b();
 	}
 	public static void b(){ 
-	 	Atracker.currentAtrackerMaster().trackerInfo("b", "bbbbb", LEVEL.TRACK);;
+	 	Atracker.currentAtrackerMaster().trackerInfo("bbbbb");;
 	 	Thread t1=new Thread(new Runnable() { //for test thread situation
 			@Override
 			public void run() {
@@ -52,18 +52,18 @@ public class TestAtrack {
 	public static void e(){
 		System.out.println("**********e******************\n");
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo("e","-------"+"eeee", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("-------"+"eeee");;
 		f();
 	}
 	public static void f(){
 		System.out.println("***********f*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("f","-------"+"ffffff", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ffffff");;
 		
 	}
 	
 	public static void g(){
 		System.out.println("***********g*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("g","-------"+"ggggggg", LEVEL.TRACK);;
+		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ggggggg");;
 		
 	}
 }

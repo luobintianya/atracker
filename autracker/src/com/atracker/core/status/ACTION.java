@@ -2,7 +2,7 @@ package com.atracker.core.status;
 
 
 public enum ACTION{
-	ADD("add"),REMOVE("remove"),VIEW("view");
+	ADD("add"),REMOVE("remove"),VIEW("view"),UNKNOWE("unknowe");
 	private String action;
 	ACTION(String i){
 		this.action=i;

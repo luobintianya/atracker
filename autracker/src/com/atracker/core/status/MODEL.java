@@ -1,7 +1,7 @@
 package com.atracker.core.status;
 
 public enum MODEL{
-	CART("cart"),ACCOUNT("account"),ORDER("order"),BANNER("banner"),PRODUCT("product"),SEARCH("search"),WISH("wish");
+	CART("cart"),ACCOUNT("account"),ORDER("order"),BANNER("banner"),PRODUCT("product"),SEARCH("search"),WISH("wish"),DEFAULT("default");
 	private String model;
 	MODEL(String i){
 		this.model=i;

@@ -25,7 +25,7 @@ public class AtrackerTrackerInfo {
 	private String trackId;
 	private String parentTrackId;
 	private LEVEL level;
-	private  MODEL model;
+	private MODEL model;
 	private ACTION action;
 	private int spanId;
 	private int parentId;
@@ -188,7 +188,7 @@ public class AtrackerTrackerInfo {
 	@Override
 	public String toString() {
 		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", logInfo=" + logInfo+", trackerIp=" + trackerIp
-				+ ", model=" + model + ", trackId=" + trackId + ", spanId="
+				+ ", model=" + model + ", Action=" + action + ", level=" + level+", trackId=" + trackId + ", spanId="
 				+ spanId + ", parentId=" + parentId + ", methodName="
 				+ methodName + ", methodFullName=" + methodFullName
 				+ ", timestamp=" + timestamp + ", starttime=" + starttime

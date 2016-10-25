@@ -2,7 +2,9 @@ package com.atracker.core.impl;
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
+import com.atracker.core.status.ACTION;
 import com.atracker.core.status.LEVEL;
+import com.atracker.core.status.MODEL;
 import com.atracker.data.AtrackerTrackerInfo;
 import com.atracker.service.AtrackerThreadPoolService;
  
@@ -24,7 +26,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 
-	public void trackerInfo(String title, String info, LEVEL level) {
+	public void trackerInfo(MODEL model,ACTION action,LEVEL level, String info) {
 		try {
 			isEnable = System.getProperty(ATRACKENABLE) == null ? true
 					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
@@ -33,8 +35,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 				trackContext.setMaster(this);
 				trackContext.setCurrentContext(Thread.currentThread()
 						.getStackTrace());
-				equeue(createAtrackerTrackerInfo(title, info, trackContext,
-						level));
+				equeue(createAtrackerTrackerInfo( model, action,   level, info,  trackContext ));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,7 +48,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private AtrackerTrackerInfo createAtrackerTrackerInfo(String titile,String info,AtrackerContext trackContext,LEVEL level){
+	private AtrackerTrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,Object info,AtrackerContext trackContext){
 		AtrackerTrackerInfo value=new AtrackerTrackerInfo(); 
 		if(LEVEL.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
@@ -57,6 +58,9 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		if(this.preAtrackerMaster!=null && preAtrackerMaster.getCurrentAtrackerContext()!=null){
 			value.setParentTrackId(preAtrackerMaster.getCurrentAtrackerContext().getTrackerID());
 		}
+		value.setAction(action);
+		value.setModel(model);
+		value.setLevel(level);
 		value.setTrackId(trackContext.getTrackerID());
 		value.setSpanId(trackContext.getSpanID());
 		value.setParentId(trackContext.getParentId());
@@ -99,6 +103,23 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	 */
 	public AtrackerMaster getPreAtrackerMaster() {
 		return preAtrackerMaster;
+	}
+
+	@Override
+	public void trackerInfo(MODEL model, ACTION action, String info) {
+	 trackerInfo(model, action,LEVEL.TRACK,info); 
+	}
+
+	@Override
+	public void trackerInfo(MODEL model, String info) {
+		trackerInfo(model, ACTION.UNKNOWE, info);
+		
+	}
+
+	@Override
+	public void trackerInfo(String info) {
+	 trackerInfo(MODEL.DEFAULT, info);
+		
 	}
 
 	 
