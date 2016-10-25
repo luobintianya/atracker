@@ -7,8 +7,9 @@ package com.atracker.data;
  * @author Robin
  *
  */
-public interface TrackerCustomer {
+public interface TrackerCustomer<T> {
 
-	 String getCustomerContent();
+	  T getContent(Object obj);
+ 
 	
 }
