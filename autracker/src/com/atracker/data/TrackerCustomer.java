@@ -7,9 +7,9 @@ package com.atracker.data;
  * @author Robin
  *
  */
-public interface TrackerCustomer<T> {
-
-	  T getContent(Object obj);
+public abstract interface TrackerCustomer<T> {
+	
+	   T  getContent(Object obj);
  
 	
 }

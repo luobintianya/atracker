@@ -1,7 +1,6 @@
 package com.atracker.test;
 
 import com.atracker.core.Atracker;
-import com.atracker.core.enums.LEVEL;
 
 public class TestAtrack {
 
