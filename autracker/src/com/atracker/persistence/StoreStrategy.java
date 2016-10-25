@@ -1,5 +1,7 @@
 package com.atracker.persistence;
 
+import com.atracker.data.TrackerInfo;
+
 /**
  * 
  *	Used to store info to some place</br>
@@ -11,6 +13,7 @@ package com.atracker.persistence;
  */
 public interface StoreStrategy {
 
+	public boolean saveToSomePlace(TrackerInfo info);
 	
 	
 }
