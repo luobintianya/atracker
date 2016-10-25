@@ -5,7 +5,7 @@ import java.util.Map;
 
 import redis.clients.jedis.Jedis;
 
-import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerInfo;
 
 public class RedisPersistenceService implements PersistenceService {
 
@@ -14,7 +14,7 @@ public class RedisPersistenceService implements PersistenceService {
 
 	private final static Jedis jedis = new Jedis(redisHost, port);
 
-	public void persistence(AtrackerTrackerInfo info) {
+	public void persistence(TrackerInfo info) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(info.HOSTIP, info.getHostIp());
 		map.put("age", "22");

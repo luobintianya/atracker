@@ -9,7 +9,7 @@ import com.atracker.core.enums.ACTION;
 import com.atracker.core.enums.LEVEL;
 import com.atracker.core.enums.MODEL;
 import com.atracker.data.TrackerInfo;
-import com.atracker.data.TrackerDataBag;
+import com.atracker.data.TrackerCustomer;
 import com.atracker.service.AtrackerThreadPoolService;
  
  
@@ -30,7 +30,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 
-	public void trackerInfo(MODEL model,ACTION action,LEVEL level, TrackerDataBag info) {
+	public void trackerInfo(MODEL model,ACTION action,LEVEL level, TrackerCustomer info) {
 		try {
 			isEnable = System.getProperty(ATRACKENABLE) == null ? true
 					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
@@ -52,7 +52,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private TrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,TrackerDataBag bag,AtrackerContext trackContext){
+	private TrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,TrackerCustomer bag,AtrackerContext trackContext){
 		TrackerInfo value=new TrackerInfo(); 
 		if(LEVEL.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
@@ -116,18 +116,18 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, ACTION action, TrackerDataBag info) {
+	public void trackerInfo(MODEL model, ACTION action, TrackerCustomer info) {
 	 trackerInfo(model, action,LEVEL.TRACK,info); 
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, TrackerDataBag info) {
+	public void trackerInfo(MODEL model, TrackerCustomer info) {
 		trackerInfo(model, ACTION.UNKNOWE, info);
 		
 	}
 
 	@Override
-	public void trackerInfo(TrackerDataBag info) {
+	public void trackerInfo(TrackerCustomer info) {
 	 trackerInfo(MODEL.DEFAULT, info);
 		
 	}

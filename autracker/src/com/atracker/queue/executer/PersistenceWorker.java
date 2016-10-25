@@ -1,6 +1,6 @@
 package com.atracker.queue.executer;
 
-import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerInfo;
 import com.atracker.persistence.PersistenceProvider;
 import com.atracker.service.PersistenceService;
 import com.atracker.threads.AtrackerThreadPool;
@@ -10,7 +10,7 @@ public abstract class PersistenceWorker implements Runnable{
 	private AtrackerThreadPool poolService; 
 	private String name;
 	private int workNumber;
-	private AtrackerTrackerInfo currentItem;
+	private TrackerInfo currentItem;
 	
 	private PersistenceService persistenceService;
 	
@@ -73,13 +73,13 @@ public abstract class PersistenceWorker implements Runnable{
 	/**
 	 * @return the currentItem
 	 */
-	public AtrackerTrackerInfo getCurrentItem() {
+	public TrackerInfo getCurrentItem() {
 		return currentItem;
 	}
 	/**
 	 * @param currentItem the currentItem to set
 	 */
-	protected void setCurrentItem(AtrackerTrackerInfo currentItem) {
+	protected void setCurrentItem(TrackerInfo currentItem) {
 		this.currentItem = currentItem;
 	}
 	/**

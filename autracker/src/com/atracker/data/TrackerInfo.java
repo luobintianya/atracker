@@ -5,7 +5,7 @@ import com.atracker.core.enums.LEVEL;
 import com.atracker.core.enums.MODEL;
 
 
-public class AtrackerTrackerInfo { 
+public class TrackerInfo { 
 	
 	public final String HOSTIP="hostIp";
 	public  final String TRACKERIP="trackerIp";
@@ -33,7 +33,7 @@ public class AtrackerTrackerInfo {
 	private long timestamp;
 	private long starttime;
 	private long endtime; 
-	private TrackerDataBag dataBag;
+	private TrackerCustomer dataBag;
 	private int lineNumber;
  
   
@@ -234,13 +234,13 @@ public class AtrackerTrackerInfo {
 	/**
 	 * @return the dateBag
 	 */
-	public TrackerDataBag getDateBag() {
+	public TrackerCustomer getDateBag() {
 		return dataBag;
 	}
 	/**
 	 * @param dateBag the dateBag to set
 	 */
-	public void setDateBag(TrackerDataBag dataBag) {
+	public void setDateBag(TrackerCustomer dataBag) {
 		this.dataBag = dataBag;
 	}
 	

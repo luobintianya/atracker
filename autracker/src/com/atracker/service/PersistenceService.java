@@ -1,9 +1,9 @@
 package com.atracker.service;
 
-import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerInfo;
 
 public interface PersistenceService {
 
-	public void persistence(AtrackerTrackerInfo info);
+	public void persistence(TrackerInfo info);
 	
 }

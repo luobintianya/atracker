@@ -2,7 +2,7 @@ package com.atracker.threads;
 
 import java.util.concurrent.CountDownLatch;
 
-import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerInfo;
 import com.atracker.queue.WorkerValueQueue;
 import com.atracker.queue.executer.AtrackerWorkerThread;
 import com.atracker.queue.executer.PersistenceWorker;
@@ -25,7 +25,7 @@ public abstract class AtrackerThreadPool {
 	private boolean finished;
  
 	private final CountDownLatch workersEndedSignal;
-	private WorkerValueQueue<AtrackerTrackerInfo> queue;
+	private WorkerValueQueue<TrackerInfo> queue;
 	private final int maxWorkers;
 	public AtrackerThreadPool(int maxWorkers){
 		queue=  AtrackerQueueService.getQueueInstance(maxWorkers);
@@ -63,10 +63,10 @@ public abstract class AtrackerThreadPool {
 		workersStartSignal.countDown();
 	} 
 
-	private final WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo>()
+	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo>()
 	{ 
 		@Override
-		public boolean execute(final WorkerValueQueue<AtrackerTrackerInfo> paramWorkerValueQueue, final AtrackerTrackerInfo paramE)
+		public boolean execute(final WorkerValueQueue<TrackerInfo> paramWorkerValueQueue, final TrackerInfo paramE)
 		{
 			return (isAllWorkerDead() == false);// if have one is alive then true otherwise if false
 		}
@@ -74,10 +74,10 @@ public abstract class AtrackerThreadPool {
 
  
 
-	private final WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo> doWhileWait = new WorkerValueQueue.ExecuteWhileWaiting<AtrackerTrackerInfo>()
+	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo> doWhileWait = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo>()
 	{
 		@Override
-		public boolean execute(final WorkerValueQueue<AtrackerTrackerInfo> paramWorkerValueQueue, final AtrackerTrackerInfo info)
+		public boolean execute(final WorkerValueQueue<TrackerInfo> paramWorkerValueQueue, final TrackerInfo info)
 		{ 
 			if (isAllWorkerDead() != false)
 			{
@@ -101,7 +101,7 @@ public abstract class AtrackerThreadPool {
 		return true;
 	}
 	 
-	public void equeue(AtrackerTrackerInfo info) {
+	public void equeue(TrackerInfo info) {
 		
 		if (this.finished)
 		{
@@ -121,11 +121,11 @@ public abstract class AtrackerThreadPool {
 		return new DefaultPersistenceWorker(this, "DefaultPersistenceWorker Worker <" + " " + (threadID + 1) + " of " + this.maxWorkers + ">", threadID);
 	}
 	
-	public final AtrackerTrackerInfo fetchNext(PersistenceWorker worker) throws InterruptedException {
+	public final TrackerInfo fetchNext(PersistenceWorker worker) throws InterruptedException {
 		if ((this.finished) || ((!(this.hasErrors)) && (this.finished))) {
 			return null;
 		} 
-		return ((AtrackerTrackerInfo) getQueue().take(worker.getWorkNumber()));
+		return ((TrackerInfo) getQueue().take(worker.getWorkNumber()));
 	}
 	
 	
@@ -149,7 +149,7 @@ public abstract class AtrackerThreadPool {
 	/**
 	 * @return the queue
 	 */
-	public WorkerValueQueue<AtrackerTrackerInfo> getQueue() {
+	public WorkerValueQueue<TrackerInfo> getQueue() {
 		return queue;
 	}
 	
@@ -158,7 +158,7 @@ public abstract class AtrackerThreadPool {
 		getQueue().clearValueTaken(worker.getWorkNumber());
 	}
 	
-	public boolean notifyFinished(PersistenceWorker worker,AtrackerTrackerInfo trackInfo) { 
+	public boolean notifyFinished(PersistenceWorker worker,TrackerInfo trackInfo) { 
 		System.out.println(trackInfo.toString());  
 	   getQueue().clearValueTaken(worker.getWorkNumber());
 		return (!(this.finished));
@@ -166,7 +166,7 @@ public abstract class AtrackerThreadPool {
 	/**
 	 * @param queue the queue to set
 	 */
-	public void setQueue(WorkerValueQueue<AtrackerTrackerInfo> queue) {
+	public void setQueue(WorkerValueQueue<TrackerInfo> queue) {
 		this.queue = queue;
 	}
 
