@@ -1,6 +1,7 @@
-package com.atracker.data;
+package com.atracker.persistence;
 
-import com.atracker.data.impl.StringTracker;
+import com.atracker.persistence.data.TrackerStored;
+import com.atracker.persistence.data.impl.StringStored;
 
 public class TrackerCustomerBuilder {
 
@@ -8,7 +9,7 @@ public class TrackerCustomerBuilder {
 	};
 	
 	public static String getString(Object customerData){
-		TrackerCustomer<String> customer=new StringTracker();
+		TrackerStored<String> customer=new StringStored();
 		return customer.getContent(customerData);
 	}
 	
