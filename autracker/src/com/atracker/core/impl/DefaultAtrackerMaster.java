@@ -1,11 +1,14 @@
 package com.atracker.core.impl;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
 import com.atracker.core.enums.ACTION;
 import com.atracker.core.enums.LEVEL;
 import com.atracker.core.enums.MODEL;
-import com.atracker.data.AtrackerTrackerInfo;
+import com.atracker.data.TrackerInfo;
 import com.atracker.data.TrackerDataBag;
 import com.atracker.service.AtrackerThreadPoolService;
  
@@ -49,8 +52,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private AtrackerTrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,TrackerDataBag bag,AtrackerContext trackContext){
-		AtrackerTrackerInfo value=new AtrackerTrackerInfo(); 
+	private TrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,TrackerDataBag bag,AtrackerContext trackContext){
+		TrackerInfo value=new TrackerInfo(); 
 		if(LEVEL.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
 		}else if(LEVEL.END.equals(level)){
@@ -58,6 +61,12 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		} 
 		if(this.preAtrackerMaster!=null && preAtrackerMaster.getCurrentAtrackerContext()!=null){
 			value.setParentTrackId(preAtrackerMaster.getCurrentAtrackerContext().getTrackerID());
+		}
+		try {
+			value.setHostIp(InetAddress.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		value.setAction(action);
 		value.setModel(model);
@@ -74,7 +83,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	
 	 
 	 
-	public void equeue(AtrackerTrackerInfo info) { 
+	public void equeue(TrackerInfo info) { 
 		AtrackerThreadPoolService.equeue(info);
 	} 
 	
