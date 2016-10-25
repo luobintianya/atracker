@@ -11,7 +11,7 @@ import com.atracker.data.TrackerInfo;
  * @author Robin
  *
  */
-public interface StoreStrategy {
+public interface PersistenceStrategy {
 
 	public boolean saveToSomePlace(TrackerInfo info);
 	
