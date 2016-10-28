@@ -11,5 +11,6 @@ public abstract interface TrackerStored<T> {
 	
 	   T  getContent(Object obj);
  
+	  
 	
 }

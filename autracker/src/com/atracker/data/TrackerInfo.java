@@ -7,18 +7,22 @@ import com.atracker.core.enums.MODEL;
 
 public class TrackerInfo  { 
 	
-	public final String HOSTIP="hostIp";
-	public  final String TRACKERIP="trackerIp";
-	public  final String TRACKID="trackId";
-	public  final String SPANID="spanId";
-	public  final String PARENTID="parentId";
-	public  final String METHODNAME="methodName";
-	public  final String METHODFULLNAME="methodFullName";
+	public  final String HOSTIP="hostip";
+	public  final String TRACKERIP="trackerip";
+	public  final String TRACKID="trackid";
+	public  final String SPANID="spanid";
+	public  final String PARENTID="parentid";
+	public  final String METHODNAME="methodname";
+	public  final String METHODFULLNAME="methodfullname";
 	public  final String TIMESTAMP="timestamp";
 	public  final String STARTTIME="starttime";
-	public  final String ENDTIME="endtime";
-	public  final String LOGINFO="logInfo";
+	public  final String ENDTIME="endtime"; 
 	public  final String MODEL="model"; 
+	public  final String ACTION="action";  
+	public  final String LEVEL="level"; 
+    public  final String LINENUMBER="linenumber";  
+    public  final String DATABAG="dataBag";  
+    
 	private String hostIp;
 	private String trackerIp; 
 	private String trackId;
