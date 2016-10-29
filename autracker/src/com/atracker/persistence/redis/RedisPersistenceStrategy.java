@@ -7,6 +7,7 @@ import redis.clients.jedis.Jedis;
 
 import com.atracker.data.TrackerInfo;
 import com.atracker.persistence.PersistenceStrategy;
+import com.atracker.persistence.TrackerCustomerBuilder;
 
 public class RedisPersistenceStrategy implements PersistenceStrategy{
 	private static final String redisHost = "192.168.0.100";
@@ -15,8 +16,8 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 	private final static Jedis jedis = new Jedis(redisHost, port);
 
 	@Override
-	public boolean saveToSomePlace(TrackerInfo info) {
-
+	public boolean saveToSomePlace(TrackerInfo info) { 
+		 
 		Map<String, String> infoMap = new HashMap<String, String>();  
 		infoMap.put(info.HOSTIP, info.getHostIp()); 
 		infoMap.put(info.MODEL,info.getModel().getMODEL());
@@ -25,7 +26,8 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		infoMap.put(info.TRACKID, info.getTrackId()); 
 		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
-		jedis.hmset(info.getModel().getMODEL(),infoMap);  
+		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag()));
+		jedis.hmset(info.getModel().getMODEL(),infoMap);   
 		return true;
 	}
 

@@ -7,7 +7,7 @@ package com.atracker.persistence.data;
  * @author Robin
  *
  */
-public abstract interface TrackerStored<T> {
+public abstract interface StoreTrackerData<T> {
 	
 	   T  getContent(Object obj);
  
