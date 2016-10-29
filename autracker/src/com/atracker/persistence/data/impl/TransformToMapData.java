@@ -3,9 +3,9 @@ package com.atracker.persistence.data.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.atracker.persistence.data.StoreTrackerData;
+import com.atracker.persistence.data.TransformData;
 
-public class StoreMapData implements StoreTrackerData<Map<String, String>> {
+public class TransformToMapData implements TransformData<Map<String, String>> {
 
 	@Override
 	public Map<String, String> getContent(Object obj) {

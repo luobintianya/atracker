@@ -2,9 +2,9 @@ package com.atracker.persistence;
 
 import java.util.Map;
 
-import com.atracker.persistence.data.StoreTrackerData;
-import com.atracker.persistence.data.impl.StoreMapData;
-import com.atracker.persistence.data.impl.StoreStringData;
+import com.atracker.persistence.data.TransformData;
+import com.atracker.persistence.data.impl.TransformToMapData;
+import com.atracker.persistence.data.impl.TransfromToStringData;
 
 public class TrackerCustomerBuilder {
 
@@ -12,12 +12,12 @@ public class TrackerCustomerBuilder {
 	};
 	
 	public static String getString(Object customerData){
-		StoreTrackerData<String> customer=new StoreStringData();
+		TransformData<String> customer=new TransfromToStringData();
 		return customer.getContent(customerData);
 	}
 
 	public static Map<String, String> getMap(Object customerData) {
-		StoreTrackerData<Map<String, String>> customer = new StoreMapData();
+		TransformData<Map<String, String>> customer = new TransformToMapData();
 		return customer.getContent(customerData);
 	}
 	
