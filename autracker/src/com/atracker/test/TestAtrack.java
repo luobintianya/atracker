@@ -51,12 +51,12 @@ public class TestAtrack {
 	public static void e(){
 		System.out.println("**********e******************\n");
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo("-------"+"eeee");;
+		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"-------"+"eeee");;
 		f();
 	}
 	public static void f(){
 		System.out.println("***********f*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ffffff");;
+		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"-------"+"ffffff");;
 		
 	}
 	

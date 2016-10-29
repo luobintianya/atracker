@@ -51,28 +51,8 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
 		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag())); 
 		Jedis jedis=jedisPool.getResource();
-	    jedis.hmset(info.getTrackId().hashCode()+"",infoMap);    
+	   jedis.hmset(info.getTrackId()+"-"+info.getParentId()+"-"+info.getSpanId(),infoMap);    
 		return true;
 	}
-
-	public static void main(String[] args){
-		
-//			Properties prop= new Properties(); 
-//			prop.load(RedisPersistenceStrategy.class.getResourceAsStream("redis.properties"));
-//		  	JedisPoolConfig config = new JedisPoolConfig();
-//	        config.setMaxActive(prop.getProperty("redis.maxActive"0));
-//	        config.setMaxIdle(prop.getIntValue("redis.maxIdle", 10));
-//	        //config.setMinIdle(10);
-//	        config.setMaxWait(con.getLongValue("redis.maxWait", 1000L));
-//	        config.setTestOnBorrow(true);
-//	        config.setTestOnReturn(true);
-//	        //config.testWhileIdle=true;
-//	        //config.minEvictableIdleTimeMillis=30000;
-//	        //config.timeBetweenEvictionRunsMillis=30000;
-//	        
-//	        pool = new JedisPool(config, redisaddr, redisport);
-//		Jedis jedisx= new Jedis(redisHost, port);
-//		jedisx.persist("ffffffffffff");
-		
-	}
+  
 }

@@ -43,6 +43,7 @@ public   abstract  class AtrackerContext {
 	public abstract String getCurrentMethodName();
 	
 	public abstract void setCurrentContext(StackTraceElement[] allMethod) ;
+	public abstract void setCurrentContext(StackTraceElement[] allMethod,int methodLevel) ;
 	/**
 	 * @return the master
 	 */

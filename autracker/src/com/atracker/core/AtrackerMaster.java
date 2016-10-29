@@ -7,7 +7,7 @@ import com.atracker.core.enums.MODEL;
 
 public interface AtrackerMaster {
 
- public void trackerInfo(MODEL model,ACTION action,LEVEL level,Object info);
+ public void trackerInfo(MODEL model,ACTION action,LEVEL level,Object info );
  
  public void trackerInfo(MODEL model,ACTION action,Object info);
  

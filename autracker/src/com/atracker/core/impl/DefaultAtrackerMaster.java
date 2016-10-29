@@ -29,6 +29,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		
 	}
 
+	 
 	public void trackerInfo(MODEL model,ACTION action,LEVEL level, Object info) {
 		try {
 			isEnable = System.getProperty(ATRACKENABLE) == null ? true
@@ -48,6 +49,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	
 
 	private AtrackerContext getOrCreateAtrackerContextInternal(){
+		System.out.println("trackContext"+trackContext);
 		return trackContext;
 	}
 	
@@ -117,18 +119,18 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 
 	@Override
 	public void trackerInfo(MODEL model, ACTION action, Object info) {
-	 trackerInfo(model, action,LEVEL.TRACK,info); 
+	 trackerInfo(model, action,LEVEL.TRACK,info ); 
 	}
 
 	@Override
 	public void trackerInfo(MODEL model, Object info) {
-		trackerInfo(model, ACTION.UNKNOWE, info);
+	 trackerInfo(model, ACTION.UNKNOWE,LEVEL.TRACK,info );
 		
 	}
 
 	@Override
 	public void trackerInfo(Object info) {
-	 trackerInfo(MODEL.DEFAULT, info);
+		trackerInfo(MODEL.DEFAULT, ACTION.UNKNOWE,LEVEL.TRACK,info );
 		
 	}
 	
