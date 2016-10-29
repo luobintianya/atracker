@@ -13,7 +13,7 @@ import com.atracker.data.TrackerInfo;
  */
 public interface PersistenceStrategy {
 
-	public boolean saveToSomePlace(TrackerInfo info);
+	public boolean saveTrackerInfo(TrackerInfo info);
 	
 	
 }

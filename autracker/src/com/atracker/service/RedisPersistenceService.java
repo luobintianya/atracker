@@ -9,7 +9,7 @@ public class RedisPersistenceService implements PersistenceService {
 
 	public void persistence(TrackerInfo info) {
 		
-		redisStore.saveToSomePlace(info);
+		redisStore.saveTrackerInfo(info);
 		
 	}
 

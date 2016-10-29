@@ -160,7 +160,7 @@ public abstract class AtrackerThreadPool {
 	
 	public boolean notifyFinished(PersistenceWorker worker,TrackerInfo trackInfo) { 
 		System.out.println(trackInfo.toString());  
-	   getQueue().clearValueTaken(worker.getWorkNumber());
+	    getQueue().clearValueTaken(worker.getWorkNumber());
 		return (!(this.finished));
 	}
 	/**
