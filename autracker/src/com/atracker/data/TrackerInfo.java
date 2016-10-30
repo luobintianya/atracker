@@ -23,6 +23,7 @@ public class TrackerInfo  {
 	public  final String LEVEL="level"; 
     public  final String LINENUMBER="linenumber";  
     public  final String DATABAG="dataBag";  
+    public  final String MID="mid";  
     private String mid=PropertiesUtils.loadProperties().getProperty("mid");//商户id
 	private String hostIp;
 	private String trackerIp; 

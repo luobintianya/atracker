@@ -1,6 +1,5 @@
 package com.atracker.persistence.redis;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -45,6 +44,7 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
 		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag())); 
+		infoMap.put(info.MID,info.getMid());
 		Jedis jedis=jedisPool.getResource();
 	    jedis.hmset(info.getTrackId()+"-"+info.getParentId()+"-"+info.getSpanId(),infoMap);    
 		return true;
