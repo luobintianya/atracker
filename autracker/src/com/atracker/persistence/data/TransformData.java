@@ -9,6 +9,5 @@ package com.atracker.persistence.data;
  */
 public abstract interface TransformData<T> {
 	
-	   T  getContent(Object obj); 
-	
+	   T  getContent(Object obj);   
 }

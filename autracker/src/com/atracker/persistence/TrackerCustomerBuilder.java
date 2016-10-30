@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.atracker.persistence.data.TransformData;
 import com.atracker.persistence.data.impl.TransformToMapData;
-import com.atracker.persistence.data.impl.TransfromToStringData;
+import com.atracker.persistence.data.impl.TransformToStringData;
 
 public class TrackerCustomerBuilder {
 
@@ -12,7 +12,7 @@ public class TrackerCustomerBuilder {
 	};
 	
 	public static String getString(Object customerData){
-		TransformData<String> customer=new TransfromToStringData();
+		TransformData<String> customer=new TransformToStringData();
 		return customer.getContent(customerData);
 	}
 

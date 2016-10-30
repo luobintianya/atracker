@@ -3,15 +3,17 @@ package com.atracker.persistence.data.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.atracker.persistence.data.TransformData;
+import com.atracker.persistence.data.TransformDataAbs;
 
-public class TransformToMapData implements TransformData<Map<String, String>> {
+public class TransformToMapData extends TransformDataAbs<Map<String, String>> {
 
 	@Override
-	public Map<String, String> getContent(Object obj) {
+	protected Map<String, String> convertInternal(Object obj) {
 		Map<String,String> values=new HashMap<String, String>();
 		values.put("traker", obj.toString());
 		return values;
 	}
+
+	 
 
 }
