@@ -2,6 +2,7 @@ package com.atracker.core.impl;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
@@ -73,6 +74,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		value.setAction(action);
 		value.setModel(model);
 		value.setLevel(level);
+		value.setTimestamp(new Date().getTime());
 		value.setTrackId(trackContext.getTrackerID());
 		value.setSpanId(trackContext.getSpanID());
 		value.setParentId(trackContext.getParentId());

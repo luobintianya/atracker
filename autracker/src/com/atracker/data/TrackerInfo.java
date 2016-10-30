@@ -3,6 +3,7 @@ package com.atracker.data;
 import com.atracker.core.enums.Action;
 import com.atracker.core.enums.Level;
 import com.atracker.core.enums.Model;
+import com.atracker.utils.PropertiesUtils;
 
 
 public class TrackerInfo  { 
@@ -22,7 +23,7 @@ public class TrackerInfo  {
 	public  final String LEVEL="level"; 
     public  final String LINENUMBER="linenumber";  
     public  final String DATABAG="dataBag";  
-    
+    private String mid=PropertiesUtils.loadProperties().getProperty("mid");//商户id
 	private String hostIp;
 	private String trackerIp; 
 	private String trackId;
@@ -247,8 +248,13 @@ public class TrackerInfo  {
 	public void setDateBag(Object dataBag) {
 		this.dataBag = dataBag;
 	}
-	
-	
+	/**
+	 * @return the mid
+	 */
+	public String getMid() {
+		return mid;
+	}
+ 
 	
 
 }

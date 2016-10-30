@@ -12,16 +12,16 @@ import redis.clients.jedis.JedisPoolConfig;
 import com.atracker.data.TrackerInfo;
 import com.atracker.persistence.PersistenceStrategy;
 import com.atracker.persistence.TrackerCustomerBuilder;
+import com.atracker.utils.PropertiesUtils;
 
 public class RedisPersistenceStrategy implements PersistenceStrategy{ 
   
 	private  JedisPool jedisPool=null;
 	
 	public	RedisPersistenceStrategy(){ 
-		try { 
-			Properties props = new Properties(); 
-			props.load(RedisPersistenceStrategy.class.getClassLoader()
-					.getResourceAsStream("redis.properties")); 
+	 
+			 
+			Properties	props=	PropertiesUtils.loadProperties();
 			JedisPoolConfig config = new JedisPoolConfig(); 
 			config.setMaxIdle(Integer.valueOf(props
 					.getProperty("jedis.pool.maxIdle"))); 
@@ -30,13 +30,8 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 			config.setTestOnReturn(Boolean.valueOf(props
 					.getProperty("jedis.pool.testOnReturn"))); 
 			jedisPool = new JedisPool(config, props.getProperty("redis.ip"),
-					Integer.valueOf(props.getProperty("redis.port")));
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
+					Integer.valueOf(props.getProperty("redis.port"))); 
+		 
 	 }
 	@Override
 	public boolean saveTrackerInfo(TrackerInfo info) { 
