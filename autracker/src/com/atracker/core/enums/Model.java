@@ -12,8 +12,7 @@ public class  Model   extends EnumValueAbs{
 	public static final Model ACCOUNT = valueOf("account");
 	public static final Model ORDER = valueOf("order");
 	public static final Model BANNER = valueOf("product");  
-	public static final Model PRODUCT = valueOf("banner");  
-	public static final Model SEARCH = valueOf("search");  
+	public static final Model PRODUCT = valueOf("banner");   
 	public static final Model WISH = valueOf("wish");  
 	public static final Model DEFAULT = valueOf("default");  
 	public Model(String _code){

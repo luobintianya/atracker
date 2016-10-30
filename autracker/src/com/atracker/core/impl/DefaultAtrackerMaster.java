@@ -8,6 +8,7 @@ import com.atracker.core.AtrackerMaster;
 import com.atracker.core.enums.Action;
 import com.atracker.core.enums.Level;
 import com.atracker.core.enums.Model;
+import com.atracker.core.enums.ext.ExtAction;
 import com.atracker.data.TrackerInfo;
 import com.atracker.service.AtrackerThreadPoolService;
  
@@ -130,7 +131,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 
 	@Override
 	public void trackerInfo(Object info) {
-		trackerInfo(Model.DEFAULT, Action.UNKNOWE,Level.TRACK,info );
+		trackerInfo(Model.DEFAULT, ExtAction.UNKNOWE,Level.TRACK,info );
 		
 	}
 	
