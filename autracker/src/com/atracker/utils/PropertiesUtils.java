@@ -11,7 +11,7 @@ public class PropertiesUtils {
 		try {
 			if (props == null) {
 				props = new Properties();
-				props.load(PropertiesUtils.class.getResourceAsStream(fileName));
+				props.load(PropertiesUtils.class.getClassLoader().getResourceAsStream(fileName));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

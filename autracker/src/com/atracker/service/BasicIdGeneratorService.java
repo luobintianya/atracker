@@ -32,12 +32,12 @@ public class BasicIdGeneratorService {
 		int rndnum = this.rnd.nextInt();
 		buffer.append(System.currentTimeMillis()); 
 		Formatter formatter = new Formatter(buffer, Locale.US);
-		formatter.format( "%1$016x%2$08x", new Object[] { Long.valueOf(this.count),
+		formatter.format( "%1$02x%2$08x", new Object[] { Long.valueOf(this.count),
 						Integer.valueOf(rndnum) });
 		formatter.close(); 
 	}
 
-	public String generate() {
+	public     String generate() {
 		StringBuilder buffer = new StringBuilder();
 		generate(buffer);
 		return buffer.toString();
