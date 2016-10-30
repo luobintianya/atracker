@@ -51,7 +51,7 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
 		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag())); 
 		Jedis jedis=jedisPool.getResource();
-	   jedis.hmset(info.getTrackId()+"-"+info.getParentId()+"-"+info.getSpanId(),infoMap);    
+	    jedis.hmset(info.getTrackId()+"-"+info.getParentId()+"-"+info.getSpanId(),infoMap);    
 		return true;
 	}
   

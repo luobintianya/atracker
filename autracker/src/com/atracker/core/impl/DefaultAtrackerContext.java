@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.atracker.core.AtrackerContext;
+import com.atracker.core.enums.ACTION;
+import com.atracker.core.enums.LEVEL;
+import com.atracker.core.enums.MODEL;
 import com.atracker.service.BasicIdGeneratorService;
 
 /**
@@ -36,7 +39,7 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private static final ThreadLocal<AtrackerContext> atrackinfo = new ThreadLocal<AtrackerContext>();
 	private static volatile BasicIdGeneratorService generate= new BasicIdGeneratorService();
 	private static final String UNDERLINE = "_";
-	private static final int METHODLEVEL =3;
+	private static final int METHODLEVEL =3;//trackerInfo>->trackerInfo(MODEL.DEFAULT, ACTION.UNKNOWE,LEVEL.TRACK,info )>
 	private volatile int parentId = 0;
 	private volatile int spanId = 0;
 	private volatile boolean isrollback = false;
