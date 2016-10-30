@@ -43,9 +43,9 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		 
 		Map<String, String> infoMap = new HashMap<String, String>();  
 		infoMap.put(info.HOSTIP, info.getHostIp()); 
-		infoMap.put(info.MODEL,info.getModel().getMODEL());
-		infoMap.put(info.ACTION, info.getAction().getACTION());  
-		infoMap.put(info.LEVEL, info.getLevel().getLevel()); 
+		infoMap.put(info.MODEL,info.getModel().getCode());
+		infoMap.put(info.ACTION, info.getAction().getCode());  
+		infoMap.put(info.LEVEL, info.getLevel().getCode()); 
 		infoMap.put(info.TRACKID, info.getTrackId()); 
 		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 

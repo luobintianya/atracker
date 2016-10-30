@@ -1,8 +1,8 @@
 package com.atracker.data;
 
-import com.atracker.core.enums.ACTION;
-import com.atracker.core.enums.LEVEL;
-import com.atracker.core.enums.MODEL;
+import com.atracker.core.enums.Action;
+import com.atracker.core.enums.Level;
+import com.atracker.core.enums.Model;
 
 
 public class TrackerInfo  { 
@@ -27,9 +27,9 @@ public class TrackerInfo  {
 	private String trackerIp; 
 	private String trackId;
 	private String parentTrackId;
-	private LEVEL level;
-	private MODEL model;
-	private ACTION action;
+	private Level level;
+	private Model model;
+	private Action action;
 	private int spanId;
 	private int parentId;
 	private String methodName;
@@ -202,37 +202,37 @@ public class TrackerInfo  {
 	/**
 	 * @return the model
 	 */
-	public MODEL getModel() {
+	public Model getModel() {
 		return model;
 	}
 	/**
 	 * @param model the model to set
 	 */
-	public void setModel(MODEL model) {
+	public void setModel(Model model) {
 		this.model = model;
 	}
 	/**
 	 * @return the level
 	 */
-	public LEVEL getLevel() {
+	public Level getLevel() {
 		return level;
 	}
 	/**
 	 * @param level the level to set
 	 */
-	public void setLevel(LEVEL level) {
+	public void setLevel(Level level) {
 		this.level = level;
 	}
 	/**
 	 * @return the action
 	 */
-	public ACTION getAction() {
+	public Action getAction() {
 		return action;
 	}
 	/**
 	 * @param action the action to set
 	 */
-	public void setAction(ACTION action) {
+	public void setAction(Action action) {
 		this.action = action;
 	}
 	/**

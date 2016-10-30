@@ -1,9 +1,9 @@
 package com.atracker.core.enums;
 
-public enum STORED {
+public enum Stored {
 	REDIS("redis"),DB("db"),FILE("file");
 	private String media;
-	STORED(String i){
+	Stored(String i){
 		this.media=i;
 	}
 	

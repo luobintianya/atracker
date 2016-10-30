@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.atracker.core.AtrackerContext;
-import com.atracker.core.enums.ACTION;
-import com.atracker.core.enums.LEVEL;
-import com.atracker.core.enums.MODEL;
 import com.atracker.service.BasicIdGeneratorService;
 
 /**

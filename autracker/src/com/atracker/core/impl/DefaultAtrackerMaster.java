@@ -5,9 +5,9 @@ import java.net.UnknownHostException;
 
 import com.atracker.core.AtrackerContext;
 import com.atracker.core.AtrackerMaster;
-import com.atracker.core.enums.ACTION;
-import com.atracker.core.enums.LEVEL;
-import com.atracker.core.enums.MODEL;
+import com.atracker.core.enums.Action;
+import com.atracker.core.enums.Level;
+import com.atracker.core.enums.Model;
 import com.atracker.data.TrackerInfo;
 import com.atracker.service.AtrackerThreadPoolService;
  
@@ -30,7 +30,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 
 	 
-	public void trackerInfo(MODEL model,ACTION action,LEVEL level, Object info) {
+	public void trackerInfo(Model model,Action action,Level level, Object info) {
 		try {
 			isEnable = System.getProperty(ATRACKENABLE) == null ? true
 					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
@@ -53,11 +53,11 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private TrackerInfo createAtrackerTrackerInfo(MODEL model,ACTION action,LEVEL level,Object bag,AtrackerContext trackContext){
+	private TrackerInfo createAtrackerTrackerInfo(Model model,Action action,Level level,Object bag,AtrackerContext trackContext){
 		TrackerInfo value=new TrackerInfo(); 
-		if(LEVEL.START.equals(level)){ 
+		if(Level.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
-		}else if(LEVEL.END.equals(level)){
+		}else if(Level.END.equals(level)){
 			value.setEndtime(System.currentTimeMillis()); 
 		} 
 		if(this.preAtrackerMaster!=null && preAtrackerMaster.getCurrentAtrackerContext()!=null){
@@ -118,19 +118,19 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, ACTION action, Object info) {
-	 trackerInfo(model, action,LEVEL.TRACK,info ); 
+	public void trackerInfo(Model model, Action action, Object info) {
+	 trackerInfo(model, action,Level.TRACK,info ); 
 	}
 
 	@Override
-	public void trackerInfo(MODEL model, Object info) {
-	 trackerInfo(model, ACTION.UNKNOWE,LEVEL.TRACK,info );
+	public void trackerInfo(Model model, Object info) {
+	 trackerInfo(model, Action.UNKNOWE,Level.TRACK,info );
 		
 	}
 
 	@Override
 	public void trackerInfo(Object info) {
-		trackerInfo(MODEL.DEFAULT, ACTION.UNKNOWE,LEVEL.TRACK,info );
+		trackerInfo(Model.DEFAULT, Action.UNKNOWE,Level.TRACK,info );
 		
 	}
 	
