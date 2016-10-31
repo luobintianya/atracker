@@ -50,8 +50,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	}
 	
 
-	private AtrackerContext getOrCreateAtrackerContextInternal(){
-		System.out.println("trackContext"+trackContext);
+	private AtrackerContext getOrCreateAtrackerContextInternal(){ 
 		return trackContext;
 	}
 	
