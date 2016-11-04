@@ -9,8 +9,8 @@ public class  Model   extends EnumValueAbs{
 	private static final long serialVersionUID = -9023251664142214609L;
 	private static final ConcurrentMap<String, Model> cache = new ConcurrentHashMap<String, Model>(); 
 	public static final Model CART = valueOf("cart");
-	public static final Model ACCOUNT = valueOf("account");
-	public static final Model MENU = valueOf("menu");
+	public static final Model ACCOUNT = valueOf("account"); 
+	public static final Model CATEGORY = valueOf("category");
 	public static final Model ORDER = valueOf("order");
 	public static final Model BANNER = valueOf("product");  
 	public static final Model PRODUCT = valueOf("banner");   
