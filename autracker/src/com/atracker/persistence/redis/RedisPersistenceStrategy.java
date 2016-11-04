@@ -13,6 +13,10 @@ import com.atracker.persistence.PersistenceStrategy;
 import com.atracker.persistence.TrackerCustomerBuilder;
 import com.atracker.utils.PropertiesUtils;
 
+/**
+ * @author Robin
+ *
+ */
 public class RedisPersistenceStrategy implements PersistenceStrategy{ 
   
 	private  JedisPool jedisPool=null;

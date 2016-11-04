@@ -1,6 +1,8 @@
 package com.atracker.test;
 
 import com.atracker.core.Atracker;
+import com.atracker.core.enums.Action;
+import com.atracker.core.enums.Model;
 
 public class TestAtrack {
 
@@ -51,12 +53,12 @@ public class TestAtrack {
 	public static void e(){
 		System.out.println("**********e******************\n");
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"-------"+"eeee");;
+		Atracker.currentAtrackerMaster().trackerInfo(Model.MENU,Action.CLICK,"-------"+"eeee");;
 		f();
 	}
 	public static void f(){
 		System.out.println("***********f*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"-------"+"ffffff");;
+		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ffffff");;
 		
 	}
 	
