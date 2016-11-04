@@ -53,7 +53,7 @@ public class TestAtrack {
 	public static void e(){
 		System.out.println("**********e******************\n");
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo(Model.MENU,Action.CLICK,"-------"+"eeee");;
+		Atracker.currentAtrackerMaster().trackerInfo(Model.CATEGORY,Action.CLICK,"商品分类");;
 		f();
 	}
 	public static void f(){
