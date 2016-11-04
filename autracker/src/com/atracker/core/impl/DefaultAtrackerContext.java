@@ -48,11 +48,14 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private Map<String, Map<String,String>> parentsMethod = new HashMap<String, Map<String,String>>();//method-<fulmethod,spanId_parentId>;
 
 	public DefaultAtrackerContext() {
-		this(0);
+		this(0,generate.generate());
 	}
-	public DefaultAtrackerContext(int start) { 
+	public DefaultAtrackerContext(String trackerId) {
+		this(0,trackerId);
+	}
+	public DefaultAtrackerContext(int start,String trackerId) { 
 		this.startPoint=start;
-		this.trackerId = generate.generate(); 
+		this.trackerId = trackerId; 
 		DefaultAtrackerContext.atrackinfo.set(this);
 	}
 	
