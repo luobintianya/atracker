@@ -11,7 +11,7 @@ import com.atracker.core.impl.DefaultAtrackerFactory;
  * 
  */
 public class Atracker {
-	private static final AtrackerFactory factory = new DefaultAtrackerFactory();
+	protected static AtrackerFactory<AtrackerMaster> factory = new DefaultAtrackerFactory();
 
 	private static final ThreadLocal<AtrackerMaster> localMaster = new ThreadLocal<AtrackerMaster>();
 	private static AtrackerMaster currentMaster ; 
