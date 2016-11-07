@@ -5,7 +5,7 @@ import com.atracker.core.enums.Level;
 import com.atracker.core.enums.Model;
 
 
-public interface AtrackerMaster {
+public interface AtrackerMaster  {
 
  public void trackerInfo(Model model,Action action,Level level,Object info );
  
@@ -18,7 +18,8 @@ public interface AtrackerMaster {
  
  public AtrackerContext getCurrentAtrackerContext();
    
- void setPreAtrackerMaster(AtrackerMaster pre);
+ void setPreAtrackerMaster(AtrackerMaster  pre);
  
- AtrackerMaster getPreAtrackerMaster(); 
+ AtrackerMaster getPreAtrackerMaster();
+ 
 }

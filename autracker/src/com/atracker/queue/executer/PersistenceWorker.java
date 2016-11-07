@@ -1,6 +1,7 @@
 package com.atracker.queue.executer;
 
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.persistence.PersistenceProvider;
 import com.atracker.service.PersistenceService;
 import com.atracker.threads.AtrackerThreadPool;
@@ -10,7 +11,7 @@ public abstract class PersistenceWorker implements Runnable{
 	private AtrackerThreadPool poolService; 
 	private String name;
 	private int workNumber;
-	private TrackerInfo currentItem;
+	private volatile TrackerInfo<? extends BaseInfo> currentItem;
 	
 	private PersistenceService persistenceService;
 	
@@ -25,6 +26,7 @@ public abstract class PersistenceWorker implements Runnable{
 		
 		try { 
 			for(setCurrentItem(getPoolService().fetchNext(this)); getCurrentItem() != null; setCurrentItem(getPoolService().fetchNext(this))){ //get current item
+				
 				record(); //start record.  
 			}
 		} catch (InterruptedException e) {
@@ -39,9 +41,11 @@ public abstract class PersistenceWorker implements Runnable{
 	
 	protected void record() {
 		try {
-			getPersistenceService().persistence(getCurrentItem());
+		
+			getPersistenceService().persistence(this.currentItem);
+			
 		} finally {
-			getPoolService().notifyFinished(this, getCurrentItem());
+			getPoolService().notifyFinished(this, this.currentItem);
 		}
 	}
 
@@ -73,13 +77,14 @@ public abstract class PersistenceWorker implements Runnable{
 	/**
 	 * @return the currentItem
 	 */
-	public TrackerInfo getCurrentItem() {
+	public TrackerInfo<? extends BaseInfo> getCurrentItem() { 
+
 		return currentItem;
 	}
 	/**
 	 * @param currentItem the currentItem to set
 	 */
-	protected void setCurrentItem(TrackerInfo currentItem) {
+	protected  void setCurrentItem(TrackerInfo<? extends BaseInfo> currentItem) {
 		this.currentItem = currentItem;
 	}
 	/**

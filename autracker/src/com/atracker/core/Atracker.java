@@ -19,7 +19,7 @@ public class Atracker {
 	protected Atracker() {
 	};
 
-	protected static AtrackerMaster createAtrackerMasterInternal() {
+	protected   static AtrackerMaster createAtrackerMasterInternal() {
 		return factory.getInstance();
 	}
 	public static AtrackerMaster currentAtrackerMaster() { 

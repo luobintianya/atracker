@@ -3,10 +3,11 @@ package com.atracker.data;
 import com.atracker.core.enums.Action;
 import com.atracker.core.enums.Level;
 import com.atracker.core.enums.Model;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.utils.PropertiesUtils;
 
 
-public class TrackerInfo  { 
+public class TrackerInfo<T extends BaseInfo>  { 
 	
 	public  final String HOSTIP="hostip";
 	public  final String TRACKERIP="trackerip";
@@ -39,9 +40,8 @@ public class TrackerInfo  {
 	private long timestamp;
 	private long starttime;
 	private long endtime; 
-	private Object  dataBag;
+	private T dataBag;
 	private int lineNumber;
- 
   
 	/**
 	 * @return the spanId
@@ -181,7 +181,7 @@ public class TrackerInfo  {
 	 */
 	@Override
 	public String toString() {
-		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", dateBag=" + dataBag+", trackerIp=" + trackerIp
+		return "AtrackerTrackerInfo [ parentTrackId="+parentTrackId+" hostIp=" + hostIp + ", dateBag=" + dataBag.toString()+", trackerIp=" + trackerIp
 				+ ", model=" + model + ", Action=" + action + ", level=" + level+", trackId=" + trackId + ", spanId="
 				+ spanId + ", parentId=" + parentId + ", methodName="
 				+ methodName + ", methodFullName=" + methodFullName
@@ -240,13 +240,13 @@ public class TrackerInfo  {
 	/**
 	 * @return the dateBag
 	 */
-	public Object getDateBag() {
+	public T getDateBag() {
 		return dataBag;
 	}
 	/**
 	 * @param dateBag the dateBag to set
 	 */
-	public void setDateBag(Object dataBag) {
+	public void setDateBag(T dataBag) {
 		this.dataBag = dataBag;
 	}
 	/**

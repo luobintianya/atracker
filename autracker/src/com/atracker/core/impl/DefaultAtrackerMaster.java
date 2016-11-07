@@ -11,17 +11,18 @@ import com.atracker.core.enums.Level;
 import com.atracker.core.enums.Model;
 import com.atracker.core.enums.ext.ExtAction;
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.service.AtrackerThreadPoolService;
+import com.atracker.utils.ObjectToT;
  
  
 
-public class DefaultAtrackerMaster implements AtrackerMaster {
+public class DefaultAtrackerMaster  implements AtrackerMaster{
 
 	private ThreadLocal<AtrackerContext> currentLocal=new ThreadLocal<AtrackerContext>(); 
 	private final String ATRACKENABLE="atrack.enable"; 
 	private volatile AtrackerMaster preAtrackerMaster=null; 
-	private	volatile AtrackerContext trackContext ;
-	
+	private	volatile AtrackerContext trackContext ; 
 	private boolean isEnable=true;
 	
 	public DefaultAtrackerMaster(){
@@ -34,7 +35,7 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 	 
 	public void trackerInfo(Model model,Action action,Level level, Object info) {
 		try {
-			isEnable = System.getProperty(ATRACKENABLE) == null ? true
+			isEnable = System.getProperty(ATRACKENABLE) == null ? true //enable or not
 					: Boolean.valueOf(System.getProperty(ATRACKENABLE));
 			if (isEnable) {
 				AtrackerContext trackContext = getOrCreateAtrackerContextInternal();
@@ -54,8 +55,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		return trackContext;
 	}
 	
-	private TrackerInfo createAtrackerTrackerInfo(Model model,Action action,Level level,Object bag,AtrackerContext trackContext){
-		TrackerInfo value=new TrackerInfo(); 
+	private TrackerInfo<BaseInfo> createAtrackerTrackerInfo(Model model,Action action,Level level, Object bag,AtrackerContext trackContext){
+		TrackerInfo<BaseInfo> value=new TrackerInfo<> (); 
 		if(Level.START.equals(level)){ 
 			value.setStarttime(System.currentTimeMillis());  
 		}else if(Level.END.equals(level)){
@@ -80,14 +81,15 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
 		value.setLineNumber(trackContext.getCurrentMethod().getLineNumber());
 		value.setMethodFullName(trackContext.getCurrentMethod().getClassName()+"."+trackContext.getCurrentMethod().getMethodName());
-		value.setDateBag(bag); 
+		value.setDateBag(ObjectToT.convertObjToCartT(bag)); 
 		return value;
 	}
 	
  
+	  
 	 
-	 
-	public void equeue(TrackerInfo info) { 
+	public void equeue(TrackerInfo<? extends BaseInfo> info) { 
+		 
 		AtrackerThreadPoolService.equeue(info);
 	} 
 	
@@ -135,6 +137,8 @@ public class DefaultAtrackerMaster implements AtrackerMaster {
 		trackerInfo(Model.DEFAULT, ExtAction.UNKNOWE,Level.TRACK,info );
 		
 	}
+
+ 
 	
 	
 	

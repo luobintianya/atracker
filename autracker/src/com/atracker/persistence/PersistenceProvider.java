@@ -14,7 +14,7 @@ public class PersistenceProvider {
 		
 		if (persistenService == null) {
 			persistenService = new RedisPersistenceService();
-		}
+		} 
 		return persistenService;
 	}
 

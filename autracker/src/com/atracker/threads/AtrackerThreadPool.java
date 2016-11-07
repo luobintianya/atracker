@@ -3,6 +3,7 @@ package com.atracker.threads;
 import java.util.concurrent.CountDownLatch;
 
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.queue.WorkerValueQueue;
 import com.atracker.queue.executer.AtrackerWorkerThread;
 import com.atracker.queue.executer.PersistenceWorker;
@@ -25,7 +26,7 @@ public abstract class AtrackerThreadPool {
 	private boolean finished;
  
 	private final CountDownLatch workersEndedSignal;
-	private WorkerValueQueue<TrackerInfo> queue;
+	private WorkerValueQueue<TrackerInfo<?extends BaseInfo>> queue;
 	private final int maxWorkers;
 	public AtrackerThreadPool(int maxWorkers){
 		queue=  AtrackerQueueService.getQueueInstance(maxWorkers);
@@ -63,21 +64,22 @@ public abstract class AtrackerThreadPool {
 		workersStartSignal.countDown();
 	} 
 
-	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo>()
+	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo<?extends BaseInfo>> doWhilePut = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo<?extends BaseInfo>>()
 	{ 
 		@Override
-		public boolean execute(final WorkerValueQueue<TrackerInfo> paramWorkerValueQueue, final TrackerInfo paramE)
+		public boolean execute(final WorkerValueQueue<TrackerInfo<?extends BaseInfo>> paramWorkerValueQueue, final TrackerInfo<?extends BaseInfo> paramE)
 		{
+			System.out.println("doWhilePut");
 			return (isAllWorkerDead() == false);// if have one is alive then true otherwise if false
 		}
 	};
 
  
 
-	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo> doWhileWait = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo>()
+	private final WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo<?extends BaseInfo>> doWhileWait = new WorkerValueQueue.ExecuteWhileWaiting<TrackerInfo<?extends BaseInfo>>()
 	{
 		@Override
-		public boolean execute(final WorkerValueQueue<TrackerInfo> paramWorkerValueQueue, final TrackerInfo info)
+		public boolean execute(final WorkerValueQueue<TrackerInfo<?extends BaseInfo>> paramWorkerValueQueue, final TrackerInfo<?extends BaseInfo> info)
 		{ 
 			if (isAllWorkerDead() != false)
 			{
@@ -101,14 +103,14 @@ public abstract class AtrackerThreadPool {
 		return true;
 	}
 	 
-	public void equeue(TrackerInfo info) {
+	public void equeue(TrackerInfo<?extends BaseInfo> info) {
 		
 		if (this.finished)
 		{
 			throw new IllegalStateException("master is already finished - cannot enqueue " + info);
 		}
 
-		ensureHasWorkerThread();
+		ensureHasWorkerThread(); 
 		getQueue().put(info, this.doWhilePut);   
 	} 
 	 
@@ -121,11 +123,14 @@ public abstract class AtrackerThreadPool {
 		return new DefaultPersistenceWorker(this, "DefaultPersistenceWorker Worker <" + " " + (threadID + 1) + " of " + this.maxWorkers + ">", threadID);
 	}
 	
-	public final TrackerInfo fetchNext(PersistenceWorker worker) throws InterruptedException {
+	public final TrackerInfo<?extends BaseInfo> fetchNext(PersistenceWorker worker) throws InterruptedException {
 		if ((this.finished) || ((!(this.hasErrors)) && (this.finished))) {
 			return null;
 		} 
-		return ((TrackerInfo) getQueue().take(worker.getWorkNumber()));
+		int workNum=worker.getWorkNumber();
+		TrackerInfo<?extends BaseInfo> temp=getQueue().take(workNum);
+		//System.out.println(workNum+" "+temp.toString());
+		return temp;
 	}
 	
 	
@@ -149,7 +154,8 @@ public abstract class AtrackerThreadPool {
 	/**
 	 * @return the queue
 	 */
-	public WorkerValueQueue<TrackerInfo> getQueue() {
+	public WorkerValueQueue<TrackerInfo<?extends BaseInfo>> getQueue() {
+ 
 		return queue;
 	}
 	
@@ -158,15 +164,15 @@ public abstract class AtrackerThreadPool {
 		getQueue().clearValueTaken(worker.getWorkNumber());
 	}
 	
-	public boolean notifyFinished(PersistenceWorker worker,TrackerInfo trackInfo) { 
-		System.out.println(trackInfo.toString());  
+	public boolean notifyFinished(PersistenceWorker worker,TrackerInfo<?extends BaseInfo> trackInfo) { 
+	 	System.out.println(trackInfo.toString());  
 	    getQueue().clearValueTaken(worker.getWorkNumber());
 		return (!(this.finished));
 	}
 	/**
 	 * @param queue the queue to set
 	 */
-	public void setQueue(WorkerValueQueue<TrackerInfo> queue) {
+	public void setQueue(WorkerValueQueue<TrackerInfo<?extends BaseInfo>> queue) {
 		this.queue = queue;
 	}
 

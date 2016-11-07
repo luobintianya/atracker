@@ -1,6 +1,7 @@
 package com.atracker.persistence;
 
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 
 /**
  * 
@@ -13,7 +14,7 @@ import com.atracker.data.TrackerInfo;
  */
 public interface PersistenceStrategy {
 
-	public boolean saveTrackerInfo(TrackerInfo info);
+	public boolean saveTrackerInfo(TrackerInfo<? extends BaseInfo> info);
 	
 	
 }

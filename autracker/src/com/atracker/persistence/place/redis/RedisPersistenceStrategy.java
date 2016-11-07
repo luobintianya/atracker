@@ -9,6 +9,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.persistence.PersistenceStrategy;
 import com.atracker.persistence.TrackerCustomerBuilder;
 import com.atracker.utils.PropertiesUtils;
@@ -19,26 +20,27 @@ import com.atracker.utils.PropertiesUtils;
  */
 public class RedisPersistenceStrategy implements PersistenceStrategy{ 
   
-	private  JedisPool jedisPool=null;
-	
+	private  JedisPool jedisPool=null; 
 	public	RedisPersistenceStrategy(){ 
 	 
 			 
 			Properties	props=	PropertiesUtils.loadProperties();
 			JedisPoolConfig config = new JedisPoolConfig(); 
+			config.setBlockWhenExhausted(false);
 			config.setMaxIdle(Integer.valueOf(props
-					.getProperty("jedis.pool.maxIdle"))); 
+					.getProperty("jedis.pool.maxIdle")));  
+			config.setMaxTotal(Integer.valueOf(props
+					.getProperty("jedis.pool.maxTotal")));
+			config.setMaxWaitMillis(-1); 
 			config.setTestOnBorrow(Boolean.valueOf(props
-					.getProperty("jedis.pool.testOnBorrow"))); 
-			config.setTestOnReturn(Boolean.valueOf(props
-					.getProperty("jedis.pool.testOnReturn"))); 
+					.getProperty("jedis.pool.testOnBorrow")));  
 			jedisPool = new JedisPool(config, props.getProperty("redis.ip"),
 					Integer.valueOf(props.getProperty("redis.port"))); 
 		 
 	 }
 	@Override
-	public boolean saveTrackerInfo(TrackerInfo info) { 
-		 
+	public boolean saveTrackerInfo(TrackerInfo<? extends BaseInfo> info) {  
+	 
 		Map<String, String> infoMap = new HashMap<String, String>();  
 		infoMap.put(info.HOSTIP, info.getHostIp()); 
 		infoMap.put(info.MODEL,info.getModel().getCode());
@@ -48,9 +50,10 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
 		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag())); 
-		infoMap.put(info.MID,info.getMid());
-		Jedis jedis=jedisPool.getResource();
-	    jedis.hmset(info.getTrackId()+"-"+info.getParentId()+"-"+info.getSpanId(),infoMap);    
+		infoMap.put(info.MID,info.getMid());  
+		Jedis jedis=jedisPool.getResource(); 
+		jedis.hmset(info.getDateBag().toString(),infoMap);     
+		jedis.close(); //need close !!
 		return true;
 	}
   

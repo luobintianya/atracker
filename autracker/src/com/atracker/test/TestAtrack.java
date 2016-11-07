@@ -7,64 +7,60 @@ import com.atracker.core.enums.Model;
 public class TestAtrack {
 
 	public static void main(String[] args) {
-	a(); 
+	a("main"); 
 	}
 
-	public static void a(){ 
-	 	Atracker.currentAtrackerMaster().trackerInfo( "aaaaa" );;
-	 	b();
+	public static void a(String str){ 
+	 	Atracker.currentAtrackerMaster().trackerInfo( Thread.currentThread()+"aaaaa" );;
+	 	b("main");
 	}
-	public static void b(){ 
-	 	Atracker.currentAtrackerMaster().trackerInfo("bbbbb");;
+	public static void b(String str){ 
+	 	Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"bbbbb");;
 	 	Thread t1=new Thread(new Runnable() { //for test thread situation
 			@Override
-			public void run() {
-				 
-				e();
-
+			public void run() { 
+				e("t1"); 
 			
 			}
 		});
 	 	Thread t2=new Thread(new Runnable() { //for test thread situation
 			@Override
 			public void run() {
-				e();
-				 Thread t3=new Thread(new Runnable() {
-					
+				e("t2");
+				 Thread t3=new Thread(new Runnable() { 
 					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						e();
-						f();
-					}
+					public void run() { 
+						System.out.println("--------------------------------------------------"); 
+						  e("t3");
+						  f("t3");
+						 System.out.println("--------------------------------------------------");
+					} 
 				});
-				 t3.start();
+						
+					t3.start();
+					
 			}
 		});
 	 	t1.start(); 
 	 	
-		System.out.println("--------------------------------------------------");
 		 
 	 	t2.start(); 
 	  
-	 	g();
+	 	g("main");
 	 	
 	}
-	public static void e(){
-		System.out.println("**********e******************\n");
+	public static void e(String str){ 
 	 	
-		Atracker.currentAtrackerMaster().trackerInfo(Model.CATEGORY,Action.CLICK,"商品分类");;
-		f();
+		Atracker.currentAtrackerMaster().trackerInfo(Model.CATEGORY,Action.CLICK,Thread.currentThread()+"商品分类"+str);;
+		f(str+" e-f");
 	}
-	public static void f(){
-		System.out.println("***********f*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ffffff");;
+	public static void f(String str){ 
+		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"我是f "+str);;
 		
 	}
 	
-	public static void g(){
-		System.out.println("***********g*****************\n"); 
-		Atracker.currentAtrackerMaster().trackerInfo("-------"+"ggggggg");;
+	public static void g(String str){ 
+		Atracker.currentAtrackerMaster().trackerInfo(Thread.currentThread()+"ggggggg"+str);;
 		
 	}
 }

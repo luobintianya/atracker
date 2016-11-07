@@ -1,6 +1,7 @@
 package com.atracker.service;
 
 import com.atracker.data.TrackerInfo;
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.threads.AtrackerThreadPool;
 import com.atracker.threads.DefaultAtrackerThreadPool;
 import com.atracker.utils.AtrackerContants;
@@ -28,11 +29,10 @@ public class AtrackerThreadPoolService {
 		return threadPools;
 	}
 
-	public static void equeue(TrackerInfo info) {
+	public static void equeue(TrackerInfo<? extends BaseInfo> info) {
 		if (threadPools == null) {
 			threadPools = getAtrackPoolInstance();
-		}
-
+		} 
 		threadPools.equeue(info);
 
 	}
