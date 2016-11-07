@@ -13,26 +13,27 @@ import com.atracker.core.impl.DefaultAtrackerFactory;
 public class Atracker {
 	protected static AtrackerFactory<AtrackerMaster> factory = new DefaultAtrackerFactory();
 
-	private static final ThreadLocal<AtrackerMaster> localMaster = new ThreadLocal<AtrackerMaster>();
+	protected static final ThreadLocal<AtrackerMaster> localMaster = new ThreadLocal<AtrackerMaster>();
 	private static AtrackerMaster currentMaster ; 
 
-	private Atracker() {
+	protected Atracker() {
 	};
 
+	protected static AtrackerMaster createAtrackerMasterInternal() {
+		return factory.getInstance();
+	}
 	public static AtrackerMaster currentAtrackerMaster() { 
 		AtrackerMaster temp = localMaster.get();   
-		//synchronized (localMaster) {
-			
-	
+		//synchronized (localMaster) { 
 		if (currentMaster == null) { 
 			if (temp == null) { 
-				temp = factory.getInstance();
+				temp = createAtrackerMasterInternal();
 				localMaster.set(temp);
 			}
 			currentMaster = localMaster.get();
 			return currentMaster;
 		} else if (currentMaster != null && temp == null) {  
-			AtrackerMaster	newMaster = factory.getInstance();
+			AtrackerMaster	newMaster = createAtrackerMasterInternal();
 			newMaster.setPreAtrackerMaster(currentMaster);  
 			currentMaster = newMaster;
 			localMaster.set(newMaster);  

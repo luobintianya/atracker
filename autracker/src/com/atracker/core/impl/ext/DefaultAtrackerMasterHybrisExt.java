@@ -4,7 +4,7 @@ import com.atracker.core.impl.DefaultAtrackerMaster;
  
  
 
-public class DefaultAtrackerMasterExt extends DefaultAtrackerMaster { 
+public class DefaultAtrackerMasterHybrisExt extends DefaultAtrackerMaster implements AtrackerMasterHybrisExt  { 
 	
 	
 	
