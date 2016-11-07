@@ -81,7 +81,7 @@ public class DefaultAtrackerMaster  implements AtrackerMaster{
 		value.setMethodName(trackContext.getCurrentMethod().getMethodName());
 		value.setLineNumber(trackContext.getCurrentMethod().getLineNumber());
 		value.setMethodFullName(trackContext.getCurrentMethod().getClassName()+"."+trackContext.getCurrentMethod().getMethodName());
-		value.setDateBag(ObjectToT.convertObjToCartT(bag)); 
+		value.setDateBag(ObjectToT.convertObjToCartT(bag,model)); 
 		return value;
 	}
 	

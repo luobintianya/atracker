@@ -1,5 +1,7 @@
 package com.atracker.persistence.data;
 
+import com.atracker.data.tracking.BaseInfo;
+
 
 /**
  * store data bag used transform customer data
@@ -7,7 +9,7 @@ package com.atracker.persistence.data;
  * @author Robin
  *
  */
-public abstract interface TransformData<T> {
+public abstract interface TransformData<T,S  extends BaseInfo> {
 	
-	   T  getContent(Object obj);   
+	   T  getContent(S obj);   
 }

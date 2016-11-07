@@ -1,11 +1,13 @@
 package com.atracker.persistence.data;
 
-public abstract class TransformDataAbs<T> implements TransformData<T>{
+import com.atracker.data.tracking.BaseInfo;
 
-	protected abstract  T convertInternal(Object obj)  ;
+public abstract class TransformDataAbs<T,S extends BaseInfo> implements TransformData<T,S >{
+
+	protected abstract  T convertInternal(S obj)  ;
 	
 	@Override
-	public T getContent(Object obj) { 
+	public T getContent(S obj) { 
 		return convertInternal(obj);
 	}
 }

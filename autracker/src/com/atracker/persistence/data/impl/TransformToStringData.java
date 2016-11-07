@@ -1,14 +1,16 @@
 package com.atracker.persistence.data.impl;
 
+import com.atracker.data.tracking.BaseInfo;
 import com.atracker.persistence.data.TransformDataAbs;
 
-public class TransformToStringData  extends TransformDataAbs<String> {   
+public class TransformToStringData  extends TransformDataAbs<String,BaseInfo> {   
 
+
+	
 
 	@Override
-	protected String convertInternal(Object obj) {
-		// TODO Auto-generated method stub
-		return obj.toString();
+	protected String convertInternal(BaseInfo obj) { 
+		return obj.getUserUId();
 	}
 	
 		 

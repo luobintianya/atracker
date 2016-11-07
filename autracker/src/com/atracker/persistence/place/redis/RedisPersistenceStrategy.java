@@ -1,7 +1,5 @@
 package com.atracker.persistence.place.redis;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import redis.clients.jedis.Jedis;
@@ -40,19 +38,9 @@ public class RedisPersistenceStrategy implements PersistenceStrategy{
 	 }
 	@Override
 	public boolean saveTrackerInfo(TrackerInfo<? extends BaseInfo> info) {  
-	 
-		Map<String, String> infoMap = new HashMap<String, String>();  
-		infoMap.put(info.HOSTIP, info.getHostIp()); 
-		infoMap.put(info.MODEL,info.getModel().getCode());
-		infoMap.put(info.ACTION, info.getAction().getCode());  
-		infoMap.put(info.LEVEL, info.getLevel().getCode()); 
-		infoMap.put(info.TRACKID, info.getTrackId()); 
-		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
-		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
-		infoMap.putAll(TrackerCustomerBuilder.getMap(info.getDateBag())); 
-		infoMap.put(info.MID,info.getMid());  
+	   
 		Jedis jedis=jedisPool.getResource(); 
-		jedis.hmset(info.getDateBag().toString(),infoMap);     
+		jedis.hmset(info.getDateBag().toString(),TrackerCustomerBuilder.getMap(info));     
 		jedis.close(); //need close !!
 		return true;
 	}
