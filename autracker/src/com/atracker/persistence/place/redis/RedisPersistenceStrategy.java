@@ -1,4 +1,4 @@
-package com.atracker.persistence.redis;
+package com.atracker.persistence.place.redis;
 
 import java.util.HashMap;
 import java.util.Map;

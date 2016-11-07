@@ -35,8 +35,9 @@ public class DefaultAtrackerContext extends AtrackerContext {
 
 	private static final ThreadLocal<AtrackerContext> atrackinfo = new ThreadLocal<AtrackerContext>();
 	private static volatile BasicIdGeneratorService generate= new BasicIdGeneratorService();
+	private static final String LEVELCONSTENT="com.atracker.core.Atracker";
 	private static final String UNDERLINE = "_";
-	private static final int METHODLEVEL =3;//trackerInfo>->trackerInfo(MODEL.DEFAULT, ACTION.UNKNOWE,LEVEL.TRACK,info )>
+	private int METHODLEVEL =3;//trackerInfo>->trackerInfo(MODEL.DEFAULT, ACTION.UNKNOWE,LEVEL.TRACK,info )>
 	private volatile int parentId = 0;
 	private volatile int spanId = 0;
 	private volatile boolean isrollback = false;
@@ -48,20 +49,36 @@ public class DefaultAtrackerContext extends AtrackerContext {
 	private Map<String, Map<String,String>> parentsMethod = new HashMap<String, Map<String,String>>();//method-<fulmethod,spanId_parentId>;
 
 	public DefaultAtrackerContext() {
+	
 		this(0,generate.generate());
+		
 	}
 	public DefaultAtrackerContext(String trackerId) {
 		this(0,trackerId);
 	}
-	public DefaultAtrackerContext(int start,String trackerId) { 
+	public DefaultAtrackerContext(int start,String trackerId) {  
+		this.METHODLEVEL= calculateLevel();
 		this.startPoint=start;
 		this.trackerId = trackerId; 
 		DefaultAtrackerContext.atrackinfo.set(this);
 	}
 	
+	private int calculateLevel(){
+		StackTraceElement[] countLevels=Thread.currentThread().getStackTrace(); 
+		int rtval=0;
+		int i=0;
+		for(StackTraceElement element:countLevels){ 
+			if(element.getClassName().equals(LEVELCONSTENT)){
+				rtval=i;
+			}
+			i++;
+		}
+		rtval=rtval-3;
+		return rtval;
+	}
 
 	public void setCurrentContext(StackTraceElement[] allMethod) {
-		setCurrentContext(allMethod,METHODLEVEL);
+		setCurrentContext(allMethod,this.METHODLEVEL);
 	}
 	public void setCurrentContext(StackTraceElement[] allMethod,int methodLevel) {
 
