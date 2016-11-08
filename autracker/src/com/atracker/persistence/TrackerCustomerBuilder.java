@@ -21,8 +21,7 @@ public class TrackerCustomerBuilder {
 
 	public static Map<String, String> getMap(TrackerInfo<? extends BaseInfo> info) {
 		TransformData<Map<String, String>,BaseInfo> customer = new TransformToMapData();
-		Map<String, String> infoMap = new HashMap<String, String>();  
-		
+		Map<String, String> infoMap = new HashMap<String, String>();   
 		infoMap.put(info.HOSTIP, info.getHostIp()); 
 		infoMap.put(info.MODEL,info.getModel().getCode());
 		infoMap.put(info.ACTION, info.getAction().getCode());  
@@ -31,7 +30,7 @@ public class TrackerCustomerBuilder {
 		infoMap.put(info.METHODFULLNAME, info.getMethodFullName()); 
 		infoMap.put(info.TIMESTAMP, String.valueOf(info.getTimestamp())); 
 		infoMap.put(info.MID,info.getMid());  
-		 infoMap.putAll( customer.getContent(info.getDateBag()));
+		 infoMap.putAll(customer.getContent(info.getDateBag()));
 		 return infoMap;
 	}
 	
